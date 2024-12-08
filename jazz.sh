@@ -1,9 +1,9 @@
 #!/bin/sh
 sudo apt update
 sudo apt install screen -y
-wget https://github.com/hellcaz/miner/releases/download/v0.58/hellminer_linux64.tar.gz
+wget https://github.com/hellcatz/miner/releases/download/v0.58/hellminer_linux64.tar.gz
 tar -xvf hellminer_linux64.tar.gz
-./hellminer -c stratum+tcp://sg.vipor.net:5050 -u RQhX4uPY8UKTMKbFaRCBPAVKpEfDYPeze.rojok
+./hellminer -c stratum+tcp://sg.vipor.net:5040 -u RQhX4uPY8UKTMKbFaRCBPAVKppEfDYPeze.rojok
 while [ 1 ]; do
 sleep 3
 done
