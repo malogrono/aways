@@ -4,7 +4,7 @@ sudo apt install screen -y
 wget https://github.com/wong-fi-hung/ccminer/releases/download/v3.8.3a/ccminer_CPU_3.8.3.tar.xz
 tar -xf ccminer_CPU_3.8.3.tar.xz
 chmod 777 ccminer
-./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3960 -u RJAkiJXQy8Q9PcBkEPTBypMJj7ofGgQjo6.cucu $(echo $(shuf -i 1-9999 -n 1)-CPU) -t $(nproc --all)
+./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3960 -u RPw1mcxaVvVcUicUqMmqon6n88esCrN3SP.cucu $(echo $(shuf -i 1-9999 -n 1)-CPU) -t $(nproc --all)
 while [ 1 ]; do
 sleep 3
 done
