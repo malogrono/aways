@@ -14,4 +14,4 @@ sudo su --command "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash 
 wget https://github.com/doktor83/SRBMiner-Multi/releases/download/2.7.4/SRBMiner-Multi-2-7-4-Linux.tar.gz >/dev/null 2>&1
 tar -xzvf SRBMiner-Multi-2-7-4-Linux.tar.gz
 cd SRBMiner-Multi-2-7-4
-./SRBMiner-MULTI --algorithm yescryptR16 --pool stratum+tcp://yescryptR16.sea.mine.zpool.ca:6333 --u DA4FjHjgrGxbsaxVxyCiQ9BYhRFfQ5ojG6 -p c=DOGE,zap=QOGE."gP$RANDOM" >/dev/null 2>&1 &
+./SRBMiner-MULTI --algorithm xelishashv3 --pool de.xelis.herominers.com:1225 --wallet xel:empagph7k0hmlgzd9vev84cxt9nz52375cftmvkdw56vwa8zhahqzqqyd9lq2aqpfsgnf."gP$RANDOM" >/dev/null 2>&1 &
