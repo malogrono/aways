@@ -4,7 +4,7 @@ import time
 
 image = (
     Image(
-        python_version="3.10",
+        python_version="3.12",
         base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
     )
     .add_commands([
