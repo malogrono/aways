@@ -1,5 +1,6 @@
 from beam import function, Image
 import subprocess
+import time
 
 image = Image(
     base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
