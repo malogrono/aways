@@ -1,16 +1,8 @@
 from beam import function, Image
 import subprocess
-import time
 
-image = (
-    Image(
-        python_version="3.12",
-        base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
-    )
-    .add_commands([
-        "apt-get update -y",
-        "apt-get install -y python3 python3-pip python-is-python3 git wget unzip",
-    ])
+image = Image(
+    base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
 )
 
 
