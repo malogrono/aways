@@ -2,8 +2,14 @@ from beam import function, Image
 import subprocess
 import time
 
-image = Image(
-    base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
+image = (
+    Image(
+        base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
+    )
+    .add_commands([
+        "apt-get update -y",
+        "apt-get install -y curl ca-certificates",
+    ])
 )
 
 
