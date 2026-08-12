@@ -14,7 +14,6 @@ image = (
 )
 
 
-
 @function(
     name="t4x3-runner",
     image=image,
