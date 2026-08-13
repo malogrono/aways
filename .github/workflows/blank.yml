@@ -1,0 +1,37 @@
+
+name: Deploy to Beam
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
+            echo "Setting environment variables: PROD"
+            echo "BEAM_DEPLOY_ENV=prod" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == 'refs/heads/staging' ]]; then
+            echo "Setting environment variables: STAGING"
+            echo "BEAM_DEPLOY_ENV=staging" >> $GITHUB_ENV
+          fi
+
+      - name: Authenticate and deploy to Beam
+        env:
+          BEAM_TOKEN: ${{ secrets.BEAM_TOKEN }}
+        run: |
+          pip3 install --upgrade pip
+          pip3 install beam-client
+          pip3 install fastapi
+
+          echo "beam configure default --token $BEAM_TOKEN"
+          beam configure default --token $BEAM_TOKEN
+          beam deploy app.py:function
+
