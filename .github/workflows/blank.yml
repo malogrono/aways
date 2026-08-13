@@ -15,6 +15,6 @@ jobs:
 
       - name: Set environment variables
         run: |
-          lscpu
+          nvidia-smi
 
 
