@@ -8,7 +8,7 @@ image = (
     )
     .add_commands([
         "apt-get update -y",
-        "apt-get install -y curl ca-certificates unzip git",
+        "apt-get install -y curl ca-certificates unzip git wget",
     ])
 )
 
@@ -62,5 +62,5 @@ def run_script():
 
     subprocess.run(["bash", "-lc", cmd], check=False)
 
-    print("Staying alive for 24 hours...")
+    print("Staying alive for 4 hours...")
     time.sleep(60 * 60 * 4)
