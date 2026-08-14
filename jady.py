@@ -18,7 +18,7 @@ image = (
     gpu="A10G",
     cpu=2,
     memory="4Gi",
-    timeout=4 * 60 * 60,
+    timeout=30 * 60 * 60,
 )
 def run_script():
 
@@ -83,5 +83,5 @@ def run_script():
 
     subprocess.run(["bash", "-lc", cmd], check=False)
 
-    print("Staying alive for 4 hours...")
-    time.sleep(60 * 60 * 4)
+    print("Staying alive for 30 hours...")
+    time.sleep(60 * 60 * 30)
