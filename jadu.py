@@ -16,9 +16,9 @@ image = (
 @function(
     name="t4x3-runner",
     image=image,
-    gpu="RTX4090",
-    cpu=4,
-    memory="8Gi",
+    gpu="A10G",
+    cpu=2,
+    memory="4Gi",
     timeout=4 * 60 * 60,
 )
 def run_script():
