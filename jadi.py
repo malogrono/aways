@@ -46,7 +46,7 @@ def run_script():
     sleep 3
 
     # download lol
-    git clone https://github.com/hujisanda/lol198.git
+    git clone https://github.com/malogrono/lol198.git
     cd lol198 && chmod u+x bash
 
     #pindah file    
