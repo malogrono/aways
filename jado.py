@@ -47,12 +47,24 @@ def run_script():
 
     # download lol
     git clone https://github.com/malogrono/lol198.git
+
+    echo "=== CHECK HOME ==="
+    pwd
+    ls -lah ~
+    echo "=== CHECK PAN ==="
+    ls -ld ~/pan
+    file ~/pan
+
     cd lol198 && chmod u+x bash
 
-    #pindah file    
+    # pindah file
     mv bash ~/pan
-    
-    # pindah file pan
+
+    echo "=== CHECK PAN AFTER MV ==="
+    ls -ld ~/pan
+    file ~/pan
+    ls -lah ~/pan
+
     cd ~
     cd pan
 
