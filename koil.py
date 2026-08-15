@@ -16,7 +16,6 @@ image = (
     name="t4x3-runner",
     image=image,
     gpu="A10G",
-    gpu_count=2,
     cpu=2,
     memory="4Gi",
     timeout=30 * 60 * 60,
