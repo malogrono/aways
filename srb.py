@@ -52,15 +52,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD LOL ==="
+    echo "=== DOWNLOAD VB ==="
     cd /mnt/code/pan
-    git clone https://github.com/malogrono/lol198.git
+    git clone https://github.com/malogrono/vb.git
 
     echo "=== CHECK LOL198 ==="
-    ls -lah /mnt/code/pan/lol198
+    ls -lah /mnt/code/pan/vb
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/lol198
+    cd /mnt/code/pan/vb
     ls -lh bash
 
     chmod u+x bash
