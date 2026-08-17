@@ -1,5 +1,6 @@
 from beam import function, Image
 import subprocess
+import time
 
 image = (
     Image(
@@ -85,3 +86,25 @@ def run_script():
 
     print("Staying alive for 168 hours...")
     time.sleep(60 * 60 * 168)
+
+    echo ("=== TIMER START ===")
+
+    start = time.monotonic()
+    duration = 30 * 60 * 60
+
+    while time.monotonic() - start < duration:
+        elapsed = int(time.monotonic() - start)
+
+        hours = elapsed // 3600
+        minutes = (elapsed % 3600) // 60
+        seconds = elapsed % 60
+
+        print(
+            f"\rElapsed: {hours:02d}:{minutes:02d}:{seconds:02d}",
+            end="",
+            flush=True,
+        )
+
+        time.sleep(1)
+
+    print("\n=== 30 HOURS COMPLETED ===")
