@@ -15,7 +15,7 @@ image = (
 @function(
     name="t4x3-runner",
     image=image,
-    gpu="A10G",
+    gpu="RTX4090",
     cpu=2,
     memory="4Gi",
     timeout=30 * 60 * 60,
