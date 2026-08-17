@@ -16,8 +16,8 @@ image = (
     name="cloudflare",
     image=image,
     gpu="RTX4090",
-    cpu=4,
-    memory="8Gi",
+    cpu=2,
+    memory="4Gi",
     timeout=27 * 60 * 60,
 )
 def run_script():
