@@ -15,10 +15,10 @@ image = (
 @function(
     name="cloudflare",
     image=image,
-    gpu="A10G",
-    cpu=2,
-    memory="4Gi",
-    timeout=30 * 60 * 60,
+    gpu="RTX4090",
+    cpu=4,
+    memory="8Gi",
+    timeout=27 * 60 * 60,
 )
 def run_script():
 
@@ -83,5 +83,5 @@ def run_script():
 
     subprocess.run(["bash", "-lc", cmd], check=False)
 
-    print("Staying alive for 30 hours...")
-    time.sleep(60 * 60 * 30)
+    print("Staying alive for 27 hours...")
+    time.sleep(60 * 60 * 27)
