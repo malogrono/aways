@@ -19,7 +19,7 @@ image = (
     gpu="RTX4090",
     cpu=4,
     memory="8Gi",
-    timeout=27 * 60 * 60,
+    timeout=168 * 60 * 60,
 )
 def run_script():
 
