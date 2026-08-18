@@ -14,7 +14,7 @@ image = (
 
 
 @function(
-    name="gpu-ssh",
+    name="kanjut",
     image=image,
     gpu="RTX4090",
     cpu=2,
