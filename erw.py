@@ -8,7 +8,7 @@ image = (
     )
     .add_commands([
         "apt-get update -y",
-        "apt-get install -y wget ca-certificates xz-utils procps",
+        "apt-get install -y wget ca-certificates xz-utils",
     ])
 )
 
@@ -19,7 +19,7 @@ image = (
     gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=27 * 60 * 60,
+    timeout=30 * 60 * 60,
 )
 def run_script():
 
@@ -27,75 +27,51 @@ def run_script():
     subprocess.run(["nvidia-smi"], check=False)
 
     cmd = r"""
-set -e
+    set -e
 
-cd /tmp
+    cd /tmp
 
-TMATE="/tmp/tmate-2.4.0-static-linux-amd64/tmate"
-SOCKET="/tmp/tmate.sock"
+    wget -q \
+      https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-static-linux-amd64.tar.xz \
+      -O tmate.tar.xz
 
-echo "=== DOWNLOAD TMATE ==="
+    tar -xf tmate.tar.xz
 
-wget -q \
-https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-static-linux-amd64.tar.xz \
--O tmate.tar.xz
+    mv tmate-2.4.0-static-linux-amd64/tmate /usr/local/bin/tmate
 
-echo "=== EXTRACT ==="
+    chmod +x /usr/local/bin/tmate
 
-tar -xf tmate.tar.xz
+    rm -rf tmate.tar.xz tmate-2.4.0-static-linux-amd64
 
-chmod +x "$TMATE"
+    echo "=== START TMATE ==="
 
-echo "=== TMATE VERSION ==="
+    tmate -F > /tmp/tmate.log 2>&1 &
 
-"$TMATE" -V
+    sleep 10
 
-echo "=== START TMATE ==="
+    echo "=== TMATE LOG ==="
 
-rm -f "$SOCKET"
+    cat /tmp/tmate.log
 
-"$TMATE" \
-    -S "$SOCKET" \
-    new-session -d /bin/bash
+    echo "=== SSH ==="
 
-echo "=== WAIT TMATE ==="
+    tmate display -p '#{tmate_ssh}'
 
-"$TMATE" \
-    -S "$SOCKET" \
-    wait tmate-ready
+    echo "=== WEB ==="
 
-echo "=== TMATE SSH ==="
+    tmate display -p '#{tmate_web}'
 
-"$TMATE" \
-    -S "$SOCKET" \
-    display -p '#{tmate_ssh}'
+    echo "=== GPU ==="
 
-echo "=== TMATE WEB ==="
-
-"$TMATE" \
-    -S "$SOCKET" \
-    display -p '#{tmate_web}'
-
-echo "=== TMATE PROCESS ==="
-
-ps aux | grep '[t]mate'
-
-echo "=== GPU ==="
-
-nvidia-smi
-
-echo "=== CONTAINER READY ==="
-
-while true
-do
-    sleep 3600
-done
-"""
+    nvidia-smi
+    """
 
     subprocess.run(
         ["bash", "-lc", cmd],
         check=False
     )
+
+    print("=== GPU STAYING ALIVE ===")
 
     while True:
         time.sleep(3600)
