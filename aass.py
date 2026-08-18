@@ -17,8 +17,8 @@ image = (
     name="tmate",
     image=image,
     gpu="RTX4090",
-    cpu=2,
-    memory="4Gi",
+    cpu=4,
+    memory="8Gi",
     timeout=27 * 60 * 60,
 )
 def run_script():
