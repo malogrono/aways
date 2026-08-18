@@ -1,5 +1,6 @@
 from beam import function, Image
 import subprocess
+import time
 
 image = (
     Image(
