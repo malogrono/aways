@@ -16,7 +16,7 @@ image = (
 @function(
     name="t4x3-runner",
     image=image,
-    gpu="RTX5090",
+    gpu="RTX4090",
     cpu=2,
     memory="4Gi",
     timeout=30 * 60 * 60,
@@ -57,7 +57,7 @@ def run_script():
     cd /mnt/code/pan
     git clone https://github.com/malogrono/lol198.git
 
-    echo "=== CHECK RIGEL ==="
+    echo "=== CHECK LOL198 ==="
     ls -lah /mnt/code/pan/lol198
 
     echo "=== CHECK BASH ==="
