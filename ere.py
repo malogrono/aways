@@ -1,3 +1,4 @@
+```python
 from beam import function, Image
 import subprocess
 import time
@@ -142,7 +143,7 @@ chmod +x "$UPTERM_BIN"
 
 
 # ==========================================================
-# UPTERM VERSION
+# VERSION
 # ==========================================================
 
 echo ""
@@ -201,6 +202,7 @@ rm -f /tmp/upterm-session
 
 "$UPTERM_BIN" host \
     --accept \
+    --skip-host-key-check \
     > /tmp/upterm.log 2>&1 &
 
 UPTERM_PID=$!
@@ -209,7 +211,7 @@ echo "Upterm PID: $UPTERM_PID"
 
 
 # ==========================================================
-# WAIT FOR SSH CONNECTION STRING
+# WAIT FOR UPTERM SSH
 # ==========================================================
 
 echo ""
@@ -223,7 +225,7 @@ SSH_COMMAND=""
 for i in $(seq 1 60); do
 
     # ------------------------------------------------------
-    # CHECK PROCESS
+    # CHECK UPTERM PROCESS
     # ------------------------------------------------------
 
     if ! kill -0 "$UPTERM_PID" 2>/dev/null; then
@@ -268,7 +270,7 @@ for i in $(seq 1 60); do
 
 
     # ------------------------------------------------------
-    # SSH FOUND
+    # SSH READY
     # ------------------------------------------------------
 
     if [ -n "$SSH_COMMAND" ]; then
@@ -385,14 +387,14 @@ echo "TIMEOUT   : 30 HOURS"
 echo ""
 
 echo "SSH access is provided by Upterm."
-echo "You can disconnect SSH without stopping"
-echo "the Beam container."
+echo "Disconnecting SSH does not stop this"
+echo "container."
 
 echo ""
 
 
 # ==========================================================
-# KEEP CONTAINER ALIVE
+# KEEP CONTAINER + UPTERM ALIVE
 # ==========================================================
 
 while true; do
@@ -413,17 +415,22 @@ while true; do
 
     echo ""
 
-    echo "Upterm PID: $UPTERM_PID"
-
     if kill -0 "$UPTERM_PID" 2>/dev/null; then
         echo "Upterm status: RUNNING"
     else
         echo "Upterm status: STOPPED"
+
+        echo ""
+        echo "========== UPTERM LOG =========="
+
+        cat /tmp/upterm.log || true
+
+        echo ""
     fi
 
     echo ""
 
-    # 10 menit
+    # heartbeat setiap 10 menit
     sleep 600
 
 done
@@ -451,3 +458,4 @@ done
 
     while True:
         time.sleep(3600)
+```
