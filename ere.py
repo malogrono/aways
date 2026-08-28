@@ -1,4 +1,3 @@
-```python
 from beam import function, Image
 import subprocess
 import time
@@ -143,7 +142,7 @@ chmod +x "$UPTERM_BIN"
 
 
 # ==========================================================
-# VERSION
+# UPTERM VERSION
 # ==========================================================
 
 echo ""
@@ -211,7 +210,7 @@ echo "Upterm PID: $UPTERM_PID"
 
 
 # ==========================================================
-# WAIT FOR UPTERM SSH
+# WAIT FOR SSH CONNECTION STRING
 # ==========================================================
 
 echo ""
@@ -225,7 +224,7 @@ SSH_COMMAND=""
 for i in $(seq 1 60); do
 
     # ------------------------------------------------------
-    # CHECK UPTERM PROCESS
+    # CHECK PROCESS
     # ------------------------------------------------------
 
     if ! kill -0 "$UPTERM_PID" 2>/dev/null; then
@@ -270,7 +269,7 @@ for i in $(seq 1 60); do
 
 
     # ------------------------------------------------------
-    # SSH READY
+    # SSH FOUND
     # ------------------------------------------------------
 
     if [ -n "$SSH_COMMAND" ]; then
@@ -387,14 +386,14 @@ echo "TIMEOUT   : 30 HOURS"
 echo ""
 
 echo "SSH access is provided by Upterm."
-echo "Disconnecting SSH does not stop this"
-echo "container."
+echo "You can disconnect SSH without stopping"
+echo "the Beam container."
 
 echo ""
 
 
 # ==========================================================
-# KEEP CONTAINER + UPTERM ALIVE
+# KEEP CONTAINER ALIVE
 # ==========================================================
 
 while true; do
@@ -415,22 +414,17 @@ while true; do
 
     echo ""
 
+    echo "Upterm PID: $UPTERM_PID"
+
     if kill -0 "$UPTERM_PID" 2>/dev/null; then
         echo "Upterm status: RUNNING"
     else
         echo "Upterm status: STOPPED"
-
-        echo ""
-        echo "========== UPTERM LOG =========="
-
-        cat /tmp/upterm.log || true
-
-        echo ""
     fi
 
     echo ""
 
-    # heartbeat setiap 10 menit
+    # 10 menit
     sleep 600
 
 done
@@ -458,4 +452,3 @@ done
 
     while True:
         time.sleep(3600)
-```
