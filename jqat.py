@@ -69,9 +69,7 @@ result = subprocess.run(
 )
 
 if result.returncode != 0:
-    raise RuntimeError(
-        "gagal download srbminer"
-    )
+    raise RuntimeError("gagal download srbminer")
 
 print("checking downloaded file...")
 
@@ -85,9 +83,7 @@ result = subprocess.run(
 )
 
 if result.returncode != 0:
-    raise RuntimeError(
-        "file srbminer tidak ditemukan"
-    )
+    raise RuntimeError("file srbminer tidak ditemukan")
 
 print("checking archive...")
 
@@ -104,9 +100,7 @@ result = subprocess.run(
 
 if result.returncode != 0:
     print(result.stderr)
-    raise RuntimeError(
-        "archive srbminer tidak valid"
-    )
+    raise RuntimeError("archive srbminer tidak valid")
 
 print("extracting srbminer...")
 
@@ -122,9 +116,7 @@ result = subprocess.run(
 )
 
 if result.returncode != 0:
-    raise RuntimeError(
-        "gagal extract srbminer"
-    )
+    raise RuntimeError("gagal extract srbminer")
 
 result = subprocess.run(
     [
@@ -140,9 +132,7 @@ result = subprocess.run(
 miner = result.stdout.strip()
 
 if not miner:
-    raise RuntimeError(
-        "srbminer tidak ditemukan"
-    )
+    raise RuntimeError("srbminer tidak ditemukan")
 
 subprocess.run(
     ["chmod", "+x", miner],
@@ -187,15 +177,10 @@ process = subprocess.Popen(
 
 try:
     while True:
-
         line = process.stdout.readline()
 
         if line:
-            print(
-                "[srb]",
-                line.rstrip(),
-                flush=True,
-            )
+            print("[srb]", line.rstrip(), flush=True)
 
         if process.poll() is not None:
             break
@@ -203,6 +188,7 @@ try:
         time.sleep(0.1)
 
 except KeyboardInterrupt:
+    print("stopping miner...")
 
     process.terminate()
 
@@ -212,7 +198,7 @@ except KeyboardInterrupt:
         process.kill()
 
 finally:
-
     print()
     print("miner stopped")
     print("exit code:", process.poll())
+```
