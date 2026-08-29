@@ -28,7 +28,7 @@ pearl_wallet = (
 worker_name = "beam-4090"
 
 @function(
-name="pearl-srbminer-4090",
+name="hama",
 image=image,
 gpu="RTX4090",
 cpu=2,
