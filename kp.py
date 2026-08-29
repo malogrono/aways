@@ -29,7 +29,7 @@ worker_name = "beam-4090"
 
 
 @function(
-    name="hama",
+    name="pearl-srbminer-4090",
     image=image,
     gpu="RTX4090",
     cpu=2,
@@ -69,7 +69,9 @@ def run_pearl():
     )
 
     if result.returncode != 0:
-        raise RuntimeError("gagal download srbminer")
+        raise RuntimeError(
+            "gagal download srbminer"
+        )
 
     print("download selesai", flush=True)
 
@@ -87,7 +89,9 @@ def run_pearl():
     )
 
     if result.returncode != 0:
-        raise RuntimeError("gagal extract srbminer")
+        raise RuntimeError(
+            "gagal extract srbminer"
+        )
 
     result = subprocess.run(
         [
@@ -103,41 +107,20 @@ def run_pearl():
     miner = result.stdout.strip()
 
     if not miner:
-        raise RuntimeError("srbminer tidak ditemukan")
+        raise RuntimeError(
+            "srbminer tidak ditemukan"
+        )
 
     subprocess.run(
         ["chmod", "+x", miner],
         check=False,
     )
 
-    print("miner:", miner, flush=True)
-
-    print("checking pearlhash support...", flush=True)
-
-    result = subprocess.run(
-        [
-            miner,
-            "--list-algorithms",
-        ],
-        capture_output=True,
-        text=True,
-        check=False,
+    print(
+        "miner:",
+        miner,
+        flush=True,
     )
-
-    algorithm_output = (
-        result.stdout + "\n" + result.stderr
-    )
-
-    if "pearlhash" not in algorithm_output.lower():
-        print(
-            algorithm_output,
-            flush=True,
-        )
-        raise RuntimeError(
-            "pearlhash tidak ditemukan pada SRBMiner"
-        )
-
-    print("pearlhash supported", flush=True)
 
     wallet_worker = f"{pearl_wallet}.{worker_name}"
 
@@ -169,6 +152,13 @@ def run_pearl():
 
     print("starting miner...", flush=True)
 
+    print(
+        "command:",
+        " ".join(command[:-2]),
+        "--password x",
+        flush=True,
+    )
+
     process = subprocess.Popen(
         command,
         stdout=subprocess.PIPE,
@@ -180,6 +170,7 @@ def run_pearl():
     start_time = time.time()
 
     try:
+
         while True:
 
             line = process.stdout.readline()
@@ -198,7 +189,10 @@ def run_pearl():
 
     except KeyboardInterrupt:
 
-        print("stopping miner...", flush=True)
+        print(
+            "stopping miner...",
+            flush=True,
+        )
 
         process.terminate()
 
@@ -212,7 +206,9 @@ def run_pearl():
         runtime = time.time() - start_time
 
         print()
-        print("miner stopped", flush=True)
+        print("=" * 60)
+        print("MINER STOPPED")
+        print("=" * 60)
         print(
             "exit code:",
             process.poll(),
@@ -224,3 +220,4 @@ def run_pearl():
             "seconds",
             flush=True,
         )
+        print("=" * 60)
