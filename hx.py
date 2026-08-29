@@ -14,21 +14,22 @@ image = (
     )
     .add_commands([
         "apt-get update -y",
-        "apt-get install -y wget ca-certificates tar",
+        "apt-get install -y wget ca-certificates tar gzip",
         "rm -rf /var/lib/apt/lists/*",
     ])
 )
 
 
 # ============================================================
-# BZMINER CONFIGURATION
+# MINING CONFIGURATION
 # ============================================================
 
 BZMINER_VERSION = "25.0.0b8"
 
+# Official BzMiner release
 BZMINER_URL = (
     "https://bzminer.com/downloads/"
-    f"bzminer_v{BZMINER_VERSION}_linux.tar.gz"
+    "bzminer_v25.0.0b8_linux.tar.gz"
 )
 
 POOL = "prl.kryptex.network:7048"
@@ -40,8 +41,6 @@ WALLET = (
 WORKER_NAME = "beam-4090"
 
 ALGORITHM = "pearl"
-
-PASSWORD = "x"
 
 
 # ============================================================
@@ -59,11 +58,11 @@ PASSWORD = "x"
 def run_pearl():
 
     print("=" * 60)
-    print("PEARL MINING - BZMINER V9")
+    print("PEARL MINING - BZMINER V10")
     print("=" * 60)
 
     # --------------------------------------------------------
-    # PATH
+    # DIRECTORIES
     # --------------------------------------------------------
 
     workdir = "/workspace/bzminer"
@@ -72,17 +71,6 @@ def run_pearl():
         f"{workdir}/"
         f"bzminer_v{BZMINER_VERSION}_linux.tar.gz"
     )
-
-    extract_dir = (
-        f"{workdir}/"
-        f"bzminer_v{BZMINER_VERSION}_linux"
-    )
-
-    miner = f"{extract_dir}/bzminer"
-
-    # --------------------------------------------------------
-    # CREATE DIRECTORY
-    # --------------------------------------------------------
 
     subprocess.run(
         ["mkdir", "-p", workdir],
@@ -109,7 +97,6 @@ def run_pearl():
 
     print("downloading bzminer...")
     print("version:", BZMINER_VERSION)
-    print("url:", BZMINER_URL)
     print("-" * 60)
 
     downloaded = False
@@ -121,10 +108,10 @@ def run_pearl():
             flush=True,
         )
 
-        # Hapus file lama
         try:
-            os.remove(archive)
-        except FileNotFoundError:
+            if os.path.exists(archive):
+                os.remove(archive)
+        except Exception:
             pass
 
         result = subprocess.run(
@@ -132,9 +119,8 @@ def run_pearl():
                 "wget",
                 "-q",
                 "--show-progress",
-                "--server-response",
                 "--tries=1",
-                "--timeout=60",
+                "--timeout=90",
                 "--user-agent=Mozilla/5.0",
                 "-O",
                 archive,
@@ -145,7 +131,6 @@ def run_pearl():
 
         if result.returncode == 0:
 
-            # Pastikan file benar-benar ada
             if os.path.isfile(archive):
 
                 size = os.path.getsize(archive)
@@ -155,34 +140,30 @@ def run_pearl():
                     flush=True,
                 )
 
-                # Archive BzMiner harus berukuran cukup besar.
-                # Ini mencegah HTML/error 429 ikut dianggap
-                # sebagai archive yang valid.
                 if size > 1_000_000:
 
                     downloaded = True
                     break
 
                 print(
-                    "file terlalu kecil, kemungkinan "
-                    "bukan archive BzMiner",
+                    "file hasil download terlalu kecil",
                     flush=True,
                 )
 
         else:
 
             print(
-                f"download gagal, exit code: "
-                f"{result.returncode}",
+                "download gagal, exit code:",
+                result.returncode,
                 flush=True,
             )
 
         if attempt < 5:
 
-            wait_time = attempt * 10
+            wait_time = attempt * 15
 
             print(
-                f"menunggu {wait_time} detik sebelum retry...",
+                f"menunggu {wait_time} detik...",
                 flush=True,
             )
 
@@ -191,17 +172,50 @@ def run_pearl():
     if not downloaded:
 
         raise RuntimeError(
-            "gagal download BzMiner setelah 5 percobaan. "
-            "Kemungkinan server bzminer.com sedang "
-            "memberikan HTTP 429."
+            "Gagal download BzMiner. "
+            "Server bzminer.com kemungkinan "
+            "sedang memberikan HTTP 429."
         )
+
+    # --------------------------------------------------------
+    # CHECK ARCHIVE
+    # --------------------------------------------------------
+
+    print("=" * 60)
+    print("CHECKING ARCHIVE")
+    print("=" * 60)
+
+    test_archive = subprocess.run(
+        [
+            "tar",
+            "-tzf",
+            archive,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        check=False,
+    )
+
+    if test_archive.returncode != 0:
+
+        print(
+            test_archive.stdout,
+            flush=True,
+        )
+
+        raise RuntimeError(
+            "Archive BzMiner tidak valid."
+        )
+
+    print("archive valid")
 
     # --------------------------------------------------------
     # EXTRACT
     # --------------------------------------------------------
 
     print("=" * 60)
-    print("extracting bzminer...")
+    print("EXTRACTING BZMINER")
     print("=" * 60)
 
     result = subprocess.run(
@@ -222,7 +236,7 @@ def run_pearl():
         )
 
     # --------------------------------------------------------
-    # FIND MINER
+    # FIND BZMINER
     # --------------------------------------------------------
 
     result = subprocess.run(
@@ -249,20 +263,16 @@ def run_pearl():
             "binary bzminer tidak ditemukan"
         )
 
-    print("miner:")
-    print(miner)
-
-    # --------------------------------------------------------
-    # MAKE EXECUTABLE
-    # --------------------------------------------------------
-
     subprocess.run(
         ["chmod", "+x", miner],
         check=True,
     )
 
+    print("miner:")
+    print(miner)
+
     # --------------------------------------------------------
-    # BZMINER VERSION
+    # VERSION
     # --------------------------------------------------------
 
     print("=" * 60)
@@ -278,13 +288,14 @@ def run_pearl():
     )
 
     if version_result.stdout:
+
         print(
             version_result.stdout.strip(),
             flush=True,
         )
 
     # --------------------------------------------------------
-    # CONFIGURATION
+    # MINING CONFIGURATION
     # --------------------------------------------------------
 
     print("=" * 60)
@@ -292,7 +303,7 @@ def run_pearl():
     print("=" * 60)
 
     print("GPU       : RTX 4090")
-    print("Algorithm :", ALGORITHM)
+    print("Algorithm : pearl")
     print("Pool      :")
     print(POOL)
     print("Worker    :")
@@ -304,38 +315,57 @@ def run_pearl():
     print("=" * 60)
 
     # --------------------------------------------------------
-    # BZMINER COMMAND
+    # OFFICIAL KRYPTEX BZMINER COMMAND
     # --------------------------------------------------------
 
-    pool_url = f"stratum+tcp://{POOL}"
+    pool_url = (
+        "stratum+tcp://"
+        + POOL
+    )
+
+    wallet_worker = (
+        WALLET
+        + "/"
+        + WORKER_NAME
+    )
 
     command = [
         miner,
 
-        # Pearl
-        "--a1",
+        "-a",
         ALGORITHM,
 
-        # Pool
-        "--p1",
+        "-p",
         pool_url,
 
-        # Wallet
-        "--w1",
-        WALLET,
+        "-w",
+        wallet_worker,
 
-        # Worker
-        "--r1",
-        WORKER_NAME,
+        "--nvidia",
+        "1",
 
-        # Password
-        "--pool_password1",
-        PASSWORD,
+        "--amd",
+        "1",
 
-        # Pearl optimization
-        "--pearl_opt",
-        "auto",
+        "--intel",
+        "1",
+
+        "--igpu",
+        "0",
+
+        "--cpu",
+        "0",
+
+        "--cpu_threads",
+        "0",
+
+        "--nc",
+        "1",
     ]
+
+    # --------------------------------------------------------
+    # SHOW COMMAND
+    # --------------------------------------------------------
 
     print("starting miner...")
     print("=" * 60)
@@ -350,7 +380,7 @@ def run_pearl():
     print("=" * 60)
 
     # --------------------------------------------------------
-    # START BZMINER
+    # START MINER
     # --------------------------------------------------------
 
     start_time = time.time()
@@ -364,13 +394,18 @@ def run_pearl():
     )
 
     # --------------------------------------------------------
-    # MONITOR
+    # STATUS FLAGS
     # --------------------------------------------------------
 
     connected = False
     hashing = False
     share_submitted = False
     share_accepted = False
+    share_rejected = False
+
+    # --------------------------------------------------------
+    # MONITOR OUTPUT
+    # --------------------------------------------------------
 
     try:
 
@@ -391,14 +426,19 @@ def run_pearl():
                 lower = text.lower()
 
                 # --------------------------------------------
-                # CONNECTION DETECTION
+                # CONNECTION
                 # --------------------------------------------
 
-                if (
-                    "connected" in lower
-                    or "connection established" in lower
-                    or "stratum connected" in lower
-                    or "subscribed" in lower
+                connection_words = [
+                    "connected",
+                    "stratum connected",
+                    "connection established",
+                    "subscribed",
+                ]
+
+                if any(
+                    word in lower
+                    for word in connection_words
                 ):
 
                     if not connected:
@@ -421,15 +461,22 @@ def run_pearl():
                         )
 
                 # --------------------------------------------
-                # HASHING DETECTION
+                # HASHRATE
                 # --------------------------------------------
 
-                if (
-                    "hashrate" in lower
-                    or "hash rate" in lower
-                    or "h/s" in lower
-                    or "mh/s" in lower
-                    or "gh/s" in lower
+                hash_words = [
+                    "hashrate",
+                    "hash rate",
+                    "h/s",
+                    "kh/s",
+                    "mh/s",
+                    "gh/s",
+                    "th/s",
+                ]
+
+                if any(
+                    word in lower
+                    for word in hash_words
                 ):
 
                     if not hashing:
@@ -442,7 +489,7 @@ def run_pearl():
                         )
 
                         print(
-                            "STATUS: HASHING DETECTED",
+                            "STATUS: HASHRATE DETECTED",
                             flush=True,
                         )
 
@@ -455,33 +502,44 @@ def run_pearl():
                 # SHARE SUBMITTED
                 # --------------------------------------------
 
-                if (
-                    "share submitted" in lower
-                    or "submitted share" in lower
-                    or "share:" in lower
-                    or "submit" in lower
+                submit_words = [
+                    "share submitted",
+                    "submitted share",
+                    "share accepted",
+                    "accepted share",
+                ]
+
+                if any(
+                    word in lower
+                    for word in submit_words
                 ):
 
-                    if not share_submitted:
+                    share_submitted = True
 
-                        share_submitted = True
-
-                        print(
-                            "STATUS: SHARE SUBMISSION DETECTED",
-                            flush=True,
-                        )
+                    print(
+                        "STATUS: SHARE SUBMISSION DETECTED",
+                        flush=True,
+                    )
 
                 # --------------------------------------------
                 # SHARE ACCEPTED
                 # --------------------------------------------
 
-                if (
-                    "share accepted" in lower
-                    or "accepted" in lower
-                    or "accepted share" in lower
+                accepted_words = [
+                    "share accepted",
+                    "accepted share",
+                    "accepted",
+                ]
+
+                if any(
+                    word in lower
+                    for word in accepted_words
                 ):
 
-                    if not share_accepted:
+                    if (
+                        "rejected" not in lower
+                        and "reject" not in lower
+                    ):
 
                         share_accepted = True
 
@@ -499,6 +557,23 @@ def run_pearl():
                             "=" * 60,
                             flush=True,
                         )
+
+                # --------------------------------------------
+                # SHARE REJECTED
+                # --------------------------------------------
+
+                if (
+                    "share rejected" in lower
+                    or "rejected share" in lower
+                    or "reject" in lower
+                ):
+
+                    share_rejected = True
+
+                    print(
+                        "WARNING: SHARE REJECTED",
+                        flush=True,
+                    )
 
             # -----------------------------------------------
             # PROCESS EXIT
@@ -530,7 +605,7 @@ def run_pearl():
             process.kill()
 
     # --------------------------------------------------------
-    # RESULT
+    # FINAL RESULT
     # --------------------------------------------------------
 
     runtime = time.time() - start_time
@@ -545,12 +620,14 @@ def run_pearl():
     print(exit_code)
 
     print("runtime:")
-    print(f"{runtime:.2f}")
+    print(
+        f"{runtime:.2f}"
+    )
+
     print("seconds")
 
     print("=" * 60)
-
-    print("FINAL STATUS")
+    print("FINAL MINING STATUS")
     print("=" * 60)
 
     print(
@@ -559,7 +636,7 @@ def run_pearl():
     )
 
     print(
-        "Hashing        :",
+        "Hashrate       :",
         "YES" if hashing else "NO",
     )
 
@@ -573,29 +650,44 @@ def run_pearl():
         "YES" if share_accepted else "NO",
     )
 
+    print(
+        "Share rejected :",
+        "YES" if share_rejected else "NO",
+    )
+
     print("=" * 60)
 
-    # Jangan menganggap mining berhasil hanya karena
-    # process exit code = 0.
+    # --------------------------------------------------------
+    # FINAL DIAGNOSTIC
+    # --------------------------------------------------------
 
-    if not connected:
+    if connected and hashing and share_accepted:
 
         print(
-            "WARNING: belum terdeteksi koneksi pool.",
+            "RESULT: MINING BERHASIL",
             flush=True,
         )
 
-    if not hashing:
+    elif connected and hashing:
 
         print(
-            "WARNING: belum terdeteksi hashrate.",
+            "RESULT: CONNECTED + HASHING, "
+            "BELUM ADA ACCEPTED SHARE",
             flush=True,
         )
 
-    if not share_accepted:
+    elif connected:
 
         print(
-            "WARNING: belum terdeteksi accepted share.",
+            "RESULT: POOL CONNECTED, "
+            "HASHRATE BELUM TERDETEKSI",
+            flush=True,
+        )
+
+    else:
+
+        print(
+            "RESULT: BELUM TERBUKTI MINING",
             flush=True,
         )
 
