@@ -29,7 +29,7 @@ worker_name = "beam-4090"
 
 
 @function(
-    name="hama",
+    name="pearl-srbminer-4090",
     image=image,
     gpu="RTX4090",
     cpu=2,
@@ -42,7 +42,7 @@ def run_pearl():
     print("PEARL MINING")
     print("=" * 60)
 
-    print("checking gpu...")
+    print("checking gpu...", flush=True)
 
     subprocess.run(
         ["bash", "-lc", "nvidia-smi"],
@@ -58,13 +58,12 @@ def run_pearl():
     )
 
     print()
-    print("downloading srbminer...")
+    print("downloading srbminer...", flush=True)
 
     result = subprocess.run(
         [
             "wget",
             "-q",
-            "--show-progress",
             "--tries=3",
             "--timeout=60",
             "-O",
@@ -77,10 +76,10 @@ def run_pearl():
     if result.returncode != 0:
         raise RuntimeError("gagal download srbminer")
 
-    print("download selesai")
+    print("download selesai", flush=True)
 
     print()
-    print("extracting...")
+    print("extracting...", flush=True)
 
     result = subprocess.run(
         [
@@ -119,22 +118,22 @@ def run_pearl():
 
     wallet_worker = f"{pearl_wallet}.{worker_name}"
 
+    print("miner:", flush=True)
+    print(miner, flush=True)
+
     print()
     print("=" * 60)
     print("MINING CONFIGURATION")
     print("=" * 60)
     print("GPU       : RTX 4090")
     print("Algorithm : pearlhash")
-    print("Pool      :")
-    print(pearl_pool)
-    print("Worker    :")
-    print(worker_name)
+    print("Pool      :", flush=True)
+    print(pearl_pool, flush=True)
+    print("Worker    :", flush=True)
+    print(worker_name, flush=True)
     print("Wallet    : configured")
     print("Miner     : SRBMiner-MULTI 3.5.4")
     print("=" * 60)
-
-    print()
-    print("starting miner...")
 
     command = [
         miner,
@@ -149,8 +148,12 @@ def run_pearl():
         "x",
     ]
 
-    print("command:")
-    print(" ".join(command))
+    print()
+    print("starting miner...", flush=True)
+    print("command:", flush=True)
+    print(" ".join(command), flush=True)
+
+    start_time = time.time()
 
     process = subprocess.Popen(
         command,
@@ -160,15 +163,17 @@ def run_pearl():
         bufsize=1,
     )
 
-    start_time = time.time()
-
     try:
         while True:
 
             line = process.stdout.readline()
 
             if line:
-                print("[srb]", line.rstrip(), flush=True)
+                print(
+                    "[srb]",
+                    line.rstrip(),
+                    flush=True,
+                )
 
             if process.poll() is not None:
                 break
@@ -178,7 +183,7 @@ def run_pearl():
     except KeyboardInterrupt:
 
         print()
-        print("stopping miner...")
+        print("stopping miner...", flush=True)
 
         process.terminate()
 
@@ -193,9 +198,9 @@ def run_pearl():
     print("=" * 60)
     print("MINER STOPPED")
     print("=" * 60)
-    print("exit code:")
-    print(process.returncode)
-    print("runtime:")
-    print(f"{runtime:.2f}")
-    print("seconds")
+    print("exit code:", flush=True)
+    print(process.returncode, flush=True)
+    print("runtime:", flush=True)
+    print(f"{runtime:.2f}", flush=True)
+    print("seconds", flush=True)
     print("=" * 60)
