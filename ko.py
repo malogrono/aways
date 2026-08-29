@@ -29,7 +29,7 @@ worker_name = "beam-4090"
 
 
 @function(
-    name="pearl-srbminer-4090",
+    name="hama",
     image=image,
     gpu="RTX4090",
     cpu=2,
@@ -69,58 +69,11 @@ def run_pearl():
     )
 
     if result.returncode != 0:
-        raise RuntimeError(
-            "gagal download srbminer"
-        )
+        raise RuntimeError("gagal download srbminer")
 
     print("download selesai", flush=True)
 
-    result = subprocess.run(
-        [
-            "bash",
-            "-lc",
-            f'ls -lh "{archive}"',
-        ],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-
-    print(
-        result.stdout.strip(),
-        flush=True,
-    )
-
-    if result.returncode != 0:
-        raise RuntimeError(
-            "file srbminer tidak ditemukan"
-        )
-
-    print("checking archive...", flush=True)
-
-    result = subprocess.run(
-        [
-            "tar",
-            "-tzf",
-            archive,
-        ],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-
-    if result.returncode != 0:
-        print(
-            result.stderr,
-            flush=True,
-        )
-        raise RuntimeError(
-            "archive srbminer tidak valid"
-        )
-
-    print("archive valid", flush=True)
-
-    print("extracting srbminer...", flush=True)
+    print("extracting...", flush=True)
 
     result = subprocess.run(
         [
@@ -134,11 +87,7 @@ def run_pearl():
     )
 
     if result.returncode != 0:
-        raise RuntimeError(
-            "gagal extract srbminer"
-        )
-
-    print("extract selesai", flush=True)
+        raise RuntimeError("gagal extract srbminer")
 
     result = subprocess.run(
         [
@@ -154,16 +103,41 @@ def run_pearl():
     miner = result.stdout.strip()
 
     if not miner:
-        raise RuntimeError(
-            "srbminer tidak ditemukan"
-        )
+        raise RuntimeError("srbminer tidak ditemukan")
 
     subprocess.run(
         ["chmod", "+x", miner],
         check=False,
     )
 
-    print("miner ditemukan:", miner, flush=True)
+    print("miner:", miner, flush=True)
+
+    print("checking pearlhash support...", flush=True)
+
+    result = subprocess.run(
+        [
+            miner,
+            "--list-algorithms",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    algorithm_output = (
+        result.stdout + "\n" + result.stderr
+    )
+
+    if "pearlhash" not in algorithm_output.lower():
+        print(
+            algorithm_output,
+            flush=True,
+        )
+        raise RuntimeError(
+            "pearlhash tidak ditemukan pada SRBMiner"
+        )
+
+    print("pearlhash supported", flush=True)
 
     wallet_worker = f"{pearl_wallet}.{worker_name}"
 
@@ -189,6 +163,8 @@ def run_pearl():
         pearl_pool,
         "--wallet",
         wallet_worker,
+        "--password",
+        "x",
     ]
 
     print("starting miner...", flush=True)
@@ -200,6 +176,8 @@ def run_pearl():
         text=True,
         bufsize=1,
     )
+
+    start_time = time.time()
 
     try:
         while True:
@@ -220,10 +198,7 @@ def run_pearl():
 
     except KeyboardInterrupt:
 
-        print(
-            "stopping miner...",
-            flush=True,
-        )
+        print("stopping miner...", flush=True)
 
         process.terminate()
 
@@ -234,13 +209,18 @@ def run_pearl():
 
     finally:
 
-        print(
-            "miner stopped",
-            flush=True,
-        )
+        runtime = time.time() - start_time
 
+        print()
+        print("miner stopped", flush=True)
         print(
             "exit code:",
             process.poll(),
+            flush=True,
+        )
+        print(
+            "runtime:",
+            round(runtime, 2),
+            "seconds",
             flush=True,
         )
