@@ -39,9 +39,9 @@ app = modal.App("gas")
 
 @app.function(
     image=image,
-    gpu="RTX 4090",
-    cpu=2,
-    memory=4096,
+    gpu="A100",
+    cpu=4,
+    memory=8192,
     timeout=30 * 60 * 60,
 )
 def run_pearl():
@@ -271,7 +271,7 @@ def run_pearl():
     print("MINING CONFIGURATION")
     print("=" * 60)
 
-    print("GPU       : RTX 4090")
+    print("GPU       : A100")
     print("Miner     : PeakMiner")
     print("Version   :", VERSION)
     print("Coin      : Pearl")
@@ -453,7 +453,7 @@ def run_pearl():
     return {
         "miner": "PeakMiner",
         "version": VERSION,
-        "gpu": "RTX 4090",
+        "gpu": "A100",
         "coin": "Pearl",
         "algorithm": "PearlHash",
         "pool": POOL,
