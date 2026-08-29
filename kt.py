@@ -243,3 +243,4 @@ def run_pearl():
             "exit code:",
             process.poll(),
             flush=True,
+        )
