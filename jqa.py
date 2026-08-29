@@ -2,273 +2,158 @@ from beam import function, Image
 import subprocess
 import time
 
-============================================================
-BEAM IMAGE
-============================================================
-
 image = (
-Image(
-base_image="nvidia/cuda:12.4.1-runtime-ubuntu22.04",
-)
-.add_commands([
-"apt-get update -y",
-"apt-get install -y wget ca-certificates tar",
-"rm -rf /var/lib/apt/lists/*",
-])
-)
-
-============================================================
-CONFIGURATION
-============================================================
-
-SRB_VERSION = "3.5.4"
-
-SRB_URL = (
-"https://github.com/doktor83/SRBMiner-Multi/releases/"
-"download/3.5.4/"
-"SRBMiner-Multi-3-5-4-Linux.tar.gz"
+    Image(
+        base_image="nvidia/cuda:12.4.1-runtime-ubuntu22.04",
+    )
+    .add_commands([
+        "apt-get update -y",
+        "apt-get install -y wget ca-certificates tar",
+        "rm -rf /var/lib/apt/lists/*",
+    ])
 )
 
-PEARL_POOL = "prl.kryptex.network:7048"
-
-PEARL_WALLET = (
-"prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
+srbminer_url = (
+    "https://github.com/doktor83/SRBMiner-Multi/releases/"
+    "download/3.5.4/"
+    "SRBMiner-Multi-3-5-4-Linux.tar.gz"
 )
 
-WORKER_NAME = "beam-4090"
+pearl_pool = "prl.kryptex.network:7048"
 
-============================================================
-BEAM FUNCTION
-============================================================
+pearl_wallet = (
+    "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
+)
+
+worker_name = "beam-4090"
+
 
 @function(
-name="hama",
-image=image,
-gpu="RTX4090",
-cpu=2,
-memory="4Gi",
-timeout=27 * 60 * 60,
+    name="hama",
+    image=image,
+    gpu="RTX4090",
+    cpu=2,
+    memory="4Gi",
+    timeout=27 * 60 * 60,
 )
 def run_pearl():
 
-print("=" * 60)
-print("       PEARL SRBMINER - BEAM RTX 4090")
-print("=" * 60)
+    print("checking gpu...")
 
-# --------------------------------------------------------
-# 1. GPU CHECK
-# --------------------------------------------------------
-
-print("\n[1] Checking GPU...")
-
-gpu_result = subprocess.run(
-    ["bash", "-lc", "nvidia-smi"],
-    check=False,
-)
-
-if gpu_result.returncode != 0:
-    raise RuntimeError(
-        "NVIDIA GPU tidak terdeteksi."
+    subprocess.run(
+        ["bash", "-lc", "nvidia-smi"],
+        check=False,
     )
 
-# --------------------------------------------------------
-# 2. PREPARE DIRECTORY
-# --------------------------------------------------------
+    workdir = "/workspace/srbminer"
+    archive = f"{workdir}/srbminer.tar.gz"
 
-workdir = "/workspace/srbminer"
-
-subprocess.run(
-    [
-        "bash",
-        "-lc",
-        f"mkdir -p {workdir}",
-    ],
-    check=True,
-)
-
-archive = f"{workdir}/srbminer.tar.gz"
-
-# --------------------------------------------------------
-# 3. DOWNLOAD SRBMINER
-# --------------------------------------------------------
-
-print("\n[2] Downloading SRBMiner-MULTI...")
-print("Version:", SRB_VERSION)
-
-download_cmd = (
-    f'wget --tries=3 --timeout=30 '
-    f'-O "{archive}" '
-    f'"{SRB_URL}"'
-)
-
-result = subprocess.run(
-    ["bash", "-lc", download_cmd],
-    check=False,
-)
-
-if result.returncode != 0:
-    raise RuntimeError(
-        "Gagal mendownload SRBMiner-MULTI."
+    subprocess.run(
+        ["bash", "-lc", f"mkdir -p {workdir}"],
+        check=True,
     )
 
-# --------------------------------------------------------
-# 4. EXTRACT
-# --------------------------------------------------------
+    print("downloading srbminer...")
 
-print("\n[3] Extracting SRBMiner...")
-
-extract_cmd = (
-    f'tar -xzf "{archive}" '
-    f'-C "{workdir}"'
-)
-
-result = subprocess.run(
-    ["bash", "-lc", extract_cmd],
-    check=False,
-)
-
-if result.returncode != 0:
-    raise RuntimeError(
-        "Gagal extract SRBMiner."
+    result = subprocess.run(
+        [
+            "wget",
+            "-q",
+            "--show-progress",
+            "--tries=3",
+            "--timeout=60",
+            "-O",
+            archive,
+            srbminer_url,
+        ],
+        check=False,
     )
 
-# --------------------------------------------------------
-# 5. FIND BINARY
-# --------------------------------------------------------
+    if result.returncode != 0:
+        raise RuntimeError("gagal download srbminer")
 
-print("\n[4] Finding SRBMiner binary...")
+    print("extracting...")
 
-find_cmd = (
-    f'find "{workdir}" '
-    f'-type f -name "SRBMiner-MULTI" '
-    f'| head -n 1'
-)
-
-result = subprocess.run(
-    ["bash", "-lc", find_cmd],
-    capture_output=True,
-    text=True,
-    check=False,
-)
-
-miner = result.stdout.strip()
-
-if not miner:
-    raise RuntimeError(
-        "Binary SRBMiner-MULTI tidak ditemukan."
+    result = subprocess.run(
+        [
+            "tar",
+            "-xzf",
+            archive,
+            "-C",
+            workdir,
+        ],
+        check=False,
     )
 
-subprocess.run(
-    ["bash", "-lc", f'chmod +x "{miner}"'],
-    check=False,
-)
+    if result.returncode != 0:
+        raise RuntimeError("gagal extract srbminer")
 
-print("Miner:", miner)
-
-# --------------------------------------------------------
-# 6. DISPLAY CONFIG
-# --------------------------------------------------------
-
-print("\n[5] Mining configuration")
-print("--------------------------------------------")
-print("GPU       : RTX 4090")
-print("Miner     : SRBMiner-MULTI", SRB_VERSION)
-print("Algorithm : pearlhash")
-print("Pool      :", PEARL_POOL)
-print("Worker    :", WORKER_NAME)
-print("Wallet    : configured")
-print("--------------------------------------------")
-
-# --------------------------------------------------------
-# 7. START MINER
-# --------------------------------------------------------
-
-print("\n[6] Starting PearlHash miner...\n")
-
-wallet_worker = (
-    f"{PEARL_WALLET}.{WORKER_NAME}"
-)
-
-command = [
-    miner,
-    "--disable-cpu",
-    "--algorithm",
-    "pearlhash",
-    "--pool",
-    PEARL_POOL,
-    "--wallet",
-    wallet_worker,
-    "--password",
-    "x",
-]
-
-print(
-    "Starting SRBMiner-MULTI..."
-)
-
-process = subprocess.Popen(
-    command,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.STDOUT,
-    text=True,
-    bufsize=1,
-)
-
-# --------------------------------------------------------
-# 8. STREAM MINER LOG
-# --------------------------------------------------------
-
-try:
-
-    while True:
-
-        line = process.stdout.readline()
-
-        if line:
-            print(
-                "[SRB]",
-                line.rstrip(),
-                flush=True,
-            )
-
-        if process.poll() is not None:
-            break
-
-        time.sleep(0.1)
-
-except KeyboardInterrupt:
-
-    print(
-        "\nStopping SRBMiner..."
+    result = subprocess.run(
+        [
+            "bash",
+            "-lc",
+            f'find "{workdir}" -type f -name "SRBMiner-MULTI" | head -n 1',
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
     )
 
-    process.terminate()
+    miner = result.stdout.strip()
+
+    if not miner:
+        raise RuntimeError("srbminer tidak ditemukan")
+
+    subprocess.run(
+        ["chmod", "+x", miner],
+        check=False,
+    )
+
+    wallet_worker = f"{pearl_wallet}.{worker_name}"
+
+    print("starting miner...")
+    print("pool:", pearl_pool)
+    print("worker:", worker_name)
+
+    command = [
+        miner,
+        "--disable-cpu",
+        "--algorithm",
+        "pearlhash",
+        "--pool",
+        pearl_pool,
+        "--wallet",
+        wallet_worker,
+        "--password",
+        "x",
+    ]
+
+    process = subprocess.Popen(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+    )
 
     try:
-        process.wait(timeout=10)
-    except subprocess.TimeoutExpired:
-        process.kill()
+        while True:
 
-finally:
+            line = process.stdout.readline()
 
-    print()
-    print("=" * 60)
-    print("SRBMiner STOPPED")
-    print("Exit code:", process.poll())
-    print("=" * 60)
-============================================================
-ENTRYPOINT
-============================================================
+            if line:
+                print("[srb]", line.rstrip(), flush=True)
 
-if name == "main":
+            if process.poll() is not None:
+                break
 
-print("=" * 60)
-print("Deploying PearlHash SRBMiner to Beam")
-print("=" * 60)
-print()
-print("GPU   : RTX4090")
-print("Pool  :", PEARL_POOL)
-print("Worker:", WORKER_NAME)
-print()
+            time.sleep(0.1)
 
-run_pearl.remote()
+    except KeyboardInterrupt:
+
+        process.terminate()
+
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
