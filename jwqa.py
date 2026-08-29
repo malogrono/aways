@@ -24,7 +24,7 @@ image = (
 # ============================================================
 
 PEARL_MINER_URL = (
-    "https://pearlhash.xyz/downloads/pearl-miner-v2"
+    "https://pearlhash.xyz/downloads/pearl-miner-v4"
 )
 
 PEARL_POOL = "84.32.220.219:9000"
