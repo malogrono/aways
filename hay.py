@@ -38,10 +38,10 @@ def run_pearl():
     # ============================================================
 
     WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
-    WORKER = "beam-4090"
+    WORKER = "RTX"
 
     # Kryptex Singapore
-    POOL = "prl-sg.kryptex.network:7048"
+    POOL = "95.111.195.159:80"
 
     # PeakMiner official GitHub release
     VERSION = "2.11.0"
