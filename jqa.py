@@ -42,7 +42,7 @@ BEAM FUNCTION
 ============================================================
 
 @function(
-name="pearl-srbminer-4090",
+name="hama",
 image=image,
 gpu="RTX4090",
 cpu=2,
