@@ -14,7 +14,7 @@ import shutil
 image = (
     modal.Image.from_registry(
         "nvidia/cuda:12.1.1-runtime-ubuntu22.04",
-        add_python="3.11",
+        add_python="3.10",
     )
     .apt_install(
         "wget",
@@ -30,11 +30,35 @@ image = (
 # MODAL APP
 # ============================================================
 
-app = modal.App("gas")
+app = modal.App("pearl-miner")
 
 
 # ============================================================
-# PEARL MINING
+# KONFIGURASI
+# ============================================================
+
+# Masukkan wallet Pearl kamu di sini jika repository-nya PRIVATE.
+WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
+
+WORKER = "A1"
+
+POOL = "prl-sg.kryptex.network:7048"
+
+VERSION = "2.11.0"
+
+URL = (
+    f"https://github.com/peakminer/peakminer/"
+    f"releases/download/v{VERSION}/"
+    f"peakminer-{VERSION}.tar.gz"
+)
+
+BASE = "/workspace/peakminer"
+ARCHIVE = f"{BASE}/peakminer.tar.gz"
+EXTRACT = f"{BASE}/extract"
+
+
+# ============================================================
+# MODAL FUNCTION
 # ============================================================
 
 @app.function(
@@ -42,34 +66,13 @@ app = modal.App("gas")
     gpu="A100",
     cpu=4,
     memory=8192,
-    timeout=30 * 60 * 60,
+    timeout=86400,
 )
 def run_pearl():
 
     print("=" * 60)
-    print("PEARL MINING - PEAKMINER")
+    print("PEARL MINER - PEAKMINER")
     print("=" * 60)
-
-    # ========================================================
-    # CONFIG
-    # ========================================================
-
-    WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
-    WORKER = "RT"
-
-    POOL = "prl-sg.kryptex.network:7048"
-
-    VERSION = "2.11.0"
-
-    URL = (
-        f"https://github.com/peakminer/peakminer/"
-        f"releases/download/v{VERSION}/"
-        f"peakminer-{VERSION}.tar.gz"
-    )
-
-    BASE = "/workspace/peakminer"
-    ARCHIVE = f"{BASE}/peakminer.tar.gz"
-    EXTRACT = f"{BASE}/extract"
 
     os.makedirs(BASE, exist_ok=True)
 
@@ -77,8 +80,7 @@ def run_pearl():
     # GPU CHECK
     # ========================================================
 
-    print()
-    print("[1] CHECKING GPU")
+    print("\n[1] CHECK GPU")
     print("-" * 60)
 
     gpu = subprocess.run(
@@ -91,16 +93,13 @@ def run_pearl():
     print(gpu.stdout)
 
     if gpu.returncode != 0:
-        raise RuntimeError(
-            "NVIDIA GPU tidak terdeteksi."
-        )
+        raise RuntimeError("NVIDIA GPU tidak terdeteksi.")
 
     # ========================================================
-    # DOWNLOAD PEAKMINER
+    # DOWNLOAD
     # ========================================================
 
-    print()
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("DOWNLOADING PEAKMINER")
     print("=" * 60)
 
@@ -108,8 +107,6 @@ def run_pearl():
     print("Source  :", URL)
 
     if not os.path.exists(ARCHIVE):
-
-        print("Downloading...")
 
         try:
 
@@ -122,13 +119,10 @@ def run_pearl():
 
             with urllib.request.urlopen(
                 req,
-                timeout=120
+                timeout=120,
             ) as response:
 
-                with open(
-                    ARCHIVE,
-                    "wb"
-                ) as f:
+                with open(ARCHIVE, "wb") as f:
 
                     while True:
 
@@ -145,52 +139,40 @@ def run_pearl():
 
         except Exception as e:
 
-            print("Download error:")
-            print(e)
-
             if os.path.exists(ARCHIVE):
                 os.remove(ARCHIVE)
 
             raise RuntimeError(
-                "Gagal download PeakMiner dari GitHub."
+                f"Gagal download PeakMiner: {e}"
             )
 
     else:
 
-        print(
-            "Archive sudah ada, tidak download ulang."
-        )
+        print("Archive sudah ada.")
 
     # ========================================================
     # EXTRACT
     # ========================================================
 
-    print()
-    print("=" * 60)
-    print("EXTRACTING PEAKMINER")
+    print("\n" + "=" * 60)
+    print("EXTRACT")
     print("=" * 60)
 
     if os.path.exists(EXTRACT):
         shutil.rmtree(EXTRACT)
 
-    os.makedirs(
-        EXTRACT,
-        exist_ok=True
-    )
+    os.makedirs(EXTRACT, exist_ok=True)
 
     with tarfile.open(
         ARCHIVE,
-        "r:gz"
+        "r:gz",
     ) as tar:
 
         tar.extractall(EXTRACT)
 
     # ========================================================
-    # FIND BINARY
+    # FIND MINER
     # ========================================================
-
-    print()
-    print("Searching PeakMiner binary...")
 
     miner = None
 
@@ -202,7 +184,7 @@ def run_pearl():
 
                 miner = os.path.join(
                     root,
-                    filename
+                    filename,
                 )
 
                 break
@@ -212,7 +194,7 @@ def run_pearl():
 
     if not miner:
 
-        print("Isi hasil extraction:")
+        print("Isi extraction:")
 
         for root, dirs, files in os.walk(EXTRACT):
 
@@ -221,7 +203,7 @@ def run_pearl():
                 print(
                     os.path.join(
                         root,
-                        filename
+                        filename,
                     )
                 )
 
@@ -229,49 +211,63 @@ def run_pearl():
             "Binary PeakMiner tidak ditemukan."
         )
 
-    os.chmod(
-        miner,
-        0o755
-    )
+    os.chmod(miner, 0o755)
 
-    print()
-    print("PeakMiner:")
-    print(miner)
+    print("Miner :", miner)
 
     # ========================================================
     # VERSION
     # ========================================================
 
-    print()
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("PEAKMINER VERSION")
     print("=" * 60)
 
-    version_test = subprocess.run(
-        [
-            miner,
-            "--version"
-        ],
+    version = subprocess.run(
+        [miner, "--version"],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
         timeout=15,
     )
 
-    print(
-        version_test.stdout
+    print(version.stdout)
+
+    # ========================================================
+    # GPU DETECTION
+    # ========================================================
+
+    print("\n" + "=" * 60)
+    print("GPU DETECTION")
+    print("=" * 60)
+
+    gpu_test = subprocess.run(
+        [
+            miner,
+            "--coin",
+            "pearl",
+            "--list-gpus",
+            "--nvidia",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        timeout=30,
     )
+
+    print(gpu_test.stdout)
 
     # ========================================================
     # CONFIGURATION
     # ========================================================
 
-    print()
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("MINING CONFIGURATION")
     print("=" * 60)
 
     print("GPU       : A100")
+    print("CPU       : 4")
+    print("Memory    : 8 GB")
     print("Miner     : PeakMiner")
     print("Version   :", VERSION)
     print("Coin      : Pearl")
@@ -296,22 +292,21 @@ def run_pearl():
         f"{WALLET}/{WORKER}",
     ]
 
-    print()
-    print("=" * 60)
-    print("STARTING PEARL MINER")
+    print("\nSTARTING MINER")
     print("=" * 60)
 
+    # Jangan print wallet lengkap ke log
     print(
         f"{miner} "
         f"--coin pearl "
         f"-o {POOL} "
-        f"-u {WALLET}/{WORKER}"
+        f"-u [WALLET]/{WORKER}"
     )
 
     print("=" * 60)
 
     # ========================================================
-    # START MINER
+    # START
     # ========================================================
 
     process = subprocess.Popen(
@@ -322,15 +317,11 @@ def run_pearl():
         bufsize=1,
     )
 
-    start_time = time.time()
-
     connected = False
     hashing = False
     share = False
 
-    print()
-    print("=" * 60)
-    print("MINER OUTPUT")
+    print("\nMINER OUTPUT")
     print("=" * 60)
 
     try:
@@ -345,12 +336,11 @@ def run_pearl():
 
                 print(
                     "[peakminer]",
-                    line
+                    line,
                 )
 
                 low = line.lower()
 
-                # Connection detection
                 if any(
                     x in low
                     for x in [
@@ -362,9 +352,9 @@ def run_pearl():
                         "subscribed",
                     ]
                 ):
+
                     connected = True
 
-                # Hashrate detection
                 if any(
                     x in low
                     for x in [
@@ -377,9 +367,9 @@ def run_pearl():
                         "th/s",
                     ]
                 ):
+
                     hashing = True
 
-                # Share detection
                 if any(
                     x in low
                     for x in [
@@ -390,6 +380,7 @@ def run_pearl():
                         "shares accepted",
                     ]
                 ):
+
                     share = True
 
             elif process.poll() is not None:
@@ -400,53 +391,24 @@ def run_pearl():
 
     except KeyboardInterrupt:
 
-        print(
-            "Stopping miner..."
-        )
+        print("Stopping miner...")
 
         process.terminate()
 
-    runtime = (
-        time.time()
-        - start_time
-    )
+    # ========================================================
+    # RESULT
+    # ========================================================
 
     exit_code = process.poll()
 
-    # ========================================================
-    # FINAL STATUS
-    # ========================================================
-
-    print()
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("FINAL STATUS")
     print("=" * 60)
 
-    print(
-        "Pool connected :",
-        connected
-    )
-
-    print(
-        "Hashing        :",
-        hashing
-    )
-
-    print(
-        "Share detected :",
-        share
-    )
-
-    print(
-        "Exit code      :",
-        exit_code
-    )
-
-    print(
-        "Runtime        :",
-        round(runtime, 2),
-        "seconds"
-    )
+    print("Pool connected :", connected)
+    print("Hashing        :", hashing)
+    print("Share detected :", share)
+    print("Exit code      :", exit_code)
 
     print("=" * 60)
 
@@ -454,6 +416,8 @@ def run_pearl():
         "miner": "PeakMiner",
         "version": VERSION,
         "gpu": "A100",
+        "cpu": 4,
+        "memory": "8GB",
         "coin": "Pearl",
         "algorithm": "PearlHash",
         "pool": POOL,
@@ -462,5 +426,17 @@ def run_pearl():
         "hashing": hashing,
         "share_detected": share,
         "exit_code": exit_code,
-        "runtime": runtime,
     }
+
+
+# ============================================================
+# LOCAL ENTRYPOINT
+# ============================================================
+
+@app.local_entrypoint()
+def main():
+
+    result = run_pearl.remote()
+
+    print("\nRESULT:")
+    print(result)
