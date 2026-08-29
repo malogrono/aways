@@ -60,7 +60,7 @@ def run_test(command, name):
 
 
 @function(
-    name="pearl-srbminer-v7-diagnostic",
+    name="hama",
     image=image,
     gpu="RTX4090",
     cpu=2,
