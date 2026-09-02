@@ -114,7 +114,7 @@ def shutdown_handler(signum, frame):
     gpu="A100",
     cpu=4,
     memory=8192,
-    timeout=432000,
+    timeout=86400,
 )
 def run_pearl():
 
@@ -127,7 +127,7 @@ def run_pearl():
     print("GPU    : A100")
     print("CPU    : 4")
     print("Memory : 8 GB")
-    print("Time   : 120 hours")
+    print("Time   : 24 hours")
     print("Pool   :", POOL)
     print("Worker :", WORKER)
     print("=" * 60)
@@ -633,7 +633,7 @@ def run_pearl():
 
         "memory": "8GB",
 
-        "timeout": "120 hours",
+        "timeout": "24 hours",
 
         "coin": "Pearl",
 
