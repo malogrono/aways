@@ -38,7 +38,7 @@ def run_pearl():
     # ============================================================
 
     WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
-    WORKER = "RTX"
+    WORKER = "OFFICIAL"
 
     # Kryptex Singapore
     POOL = "prl-sg.kryptex.network:7048"
