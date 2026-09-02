@@ -111,7 +111,7 @@ def shutdown_handler(signum, frame):
 
 @app.function(
     image=image,
-    gpu="A100",
+    gpu="L4",
     cpu=4,
     memory=8192,
     timeout=86400,
@@ -124,7 +124,7 @@ def run_pearl():
     print("PEARL MINER - PEAKMINER")
     print("=" * 60)
 
-    print("GPU    : A100")
+    print("GPU    : L4")
     print("CPU    : 4")
     print("Memory : 8 GB")
     print("Time   : 24 hours")
@@ -627,7 +627,7 @@ def run_pearl():
 
         "version": VERSION,
 
-        "gpu": "A100",
+        "gpu": "L4",
 
         "cpu": 4,
 
