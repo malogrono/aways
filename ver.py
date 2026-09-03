@@ -25,7 +25,7 @@ image = (
     gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=500 * 60 * 60,
+    timeout=150 * 60 * 60,
 )
 def run_pearl():
 
@@ -41,7 +41,7 @@ def run_pearl():
     WORKER = "OFFICIAL"
 
     # Kryptex Singapore
-    POOL = "prl-sg.kryptex.network:7048"
+    POOL = "164.92.235.224:443"
 
     # PeakMiner official GitHub release
     VERSION = "2.11.0"
