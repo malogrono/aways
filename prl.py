@@ -22,10 +22,10 @@ image = (
 @function(
     name="gas",
     image=image,
-    gpu="H100",
+    gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=350 * 60 * 60,
+    timeout=500 * 60 * 60,
 )
 def run_pearl():
 
@@ -38,7 +38,7 @@ def run_pearl():
     # ============================================================
 
     WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
-    WORKER = "OFFICIAL"
+    WORKER = "RTX"
 
     # Kryptex Singapore
     POOL = "prl-sg.kryptex.network:7048"
@@ -78,8 +78,8 @@ def run_pearl():
     if gpu.returncode != 0:
         raise RuntimeError("NVIDIA GPU tidak terdeteksi.")
 
-    if "H100" not in gpu.stdout:
-        print("WARNING: H100 tidak terdeteksi secara eksplisit.")
+    if "RTX 4090" not in gpu.stdout:
+        print("WARNING: RTX 4090 tidak terdeteksi secara eksplisit.")
 
     # ============================================================
     # DOWNLOAD PEAKMINER
@@ -241,7 +241,7 @@ def run_pearl():
     print("MINING CONFIGURATION")
     print("=" * 60)
 
-    print("GPU       : H100")
+    print("GPU       : RTX 4090")
     print("Miner     : PeakMiner")
     print("Version   :", VERSION)
     print("Coin      : Pearl")
@@ -414,7 +414,7 @@ def run_pearl():
     return {
         "miner": "PeakMiner",
         "version": VERSION,
-        "gpu": "H100",
+        "gpu": "RTX 4090",
         "coin": "Pearl",
         "algorithm": "PearlHash",
         "pool": POOL,
