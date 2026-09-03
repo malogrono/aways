@@ -41,7 +41,7 @@ def run_pearl():
     WORKER = "RTX"
 
     # Kryptex Singapore
-    POOL = "prl-sg.kryptex.network:7048"
+    POOL = "164.92.235.224:443"
 
     # PeakMiner official GitHub release
     VERSION = "2.11.0"
