@@ -25,7 +25,7 @@ image = (
     gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=100 * 60 * 60,
+    timeout=500 * 60 * 60,
 )
 def run_pearl():
 
