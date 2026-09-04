@@ -25,7 +25,7 @@ image = (
     gpu="RTX4090",
     cpu=2,
     memory="4Gi",
-    timeout=150 * 60 * 60,
+    timeout=100 * 60 * 60,
 )
 def run_pearl():
 
@@ -44,7 +44,7 @@ def run_pearl():
     POOL = "164.92.235.224:443"
 
     # PeakMiner official GitHub release
-    VERSION = "2.11.0"
+    VERSION = "2.15.0"
 
     URL = (
         f"https://github.com/peakminer/peakminer/"
