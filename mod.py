@@ -44,7 +44,7 @@ WALLET = (
 
 WORKER = "A1"
 
-POOL = "prl-sg.kryptex.network:7048"
+POOL = "104.207.76.200:443"
 
 VERSION = "2.15.0"
 
