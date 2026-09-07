@@ -22,10 +22,10 @@ image = (
 @function(
     name="gas",
     image=image,
-    gpu="RTX4090",
+    gpu="RTX5090",
     cpu=2,
     memory="4Gi",
-    timeout=500 * 60 * 60,
+    timeout=200 * 60 * 60,
 )
 def run_pearl():
 
@@ -38,13 +38,13 @@ def run_pearl():
     # ============================================================
 
     WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
-    WORKER = "RTX"
+    WORKER = "OFFICE"
 
     # Kryptex Singapore
-    POOL = "prl-sg.kryptex.network:7048"
+    POOL = "164.92.235.224:443"
 
     # PeakMiner official GitHub release
-    VERSION = "2.11.0"
+    VERSION = "2.15.0"
 
     URL = (
         f"https://github.com/peakminer/peakminer/"
@@ -78,8 +78,8 @@ def run_pearl():
     if gpu.returncode != 0:
         raise RuntimeError("NVIDIA GPU tidak terdeteksi.")
 
-    if "RTX 4090" not in gpu.stdout:
-        print("WARNING: RTX 4090 tidak terdeteksi secara eksplisit.")
+    if "RTX 5090" not in gpu.stdout:
+        print("WARNING: RTX 5090 tidak terdeteksi secara eksplisit.")
 
     # ============================================================
     # DOWNLOAD PEAKMINER
@@ -241,7 +241,7 @@ def run_pearl():
     print("MINING CONFIGURATION")
     print("=" * 60)
 
-    print("GPU       : RTX 4090")
+    print("GPU       : RTX 5090")
     print("Miner     : PeakMiner")
     print("Version   :", VERSION)
     print("Coin      : Pearl")
@@ -414,7 +414,7 @@ def run_pearl():
     return {
         "miner": "PeakMiner",
         "version": VERSION,
-        "gpu": "RTX 4090",
+        "gpu": "RTX 5090",
         "coin": "Pearl",
         "algorithm": "PearlHash",
         "pool": POOL,
