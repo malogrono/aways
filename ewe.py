@@ -18,7 +18,7 @@ image = (
 app = modal.App("haji")
 
 # Isi wallet Anda sendiri di sini.
-WALLET = "GANTI_DENGAN_WALLET_ANDA"
+WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
 WORKER = "A1"
 POOL = "164.92.235.224:443"
 
@@ -61,7 +61,7 @@ def shutdown_handler(signum, frame):
 
 @app.function(
     image=image,
-    gpu="H100",
+    gpu="L4",
     cpu=4,
     memory=8192,
     timeout=86400,
@@ -72,7 +72,7 @@ def run_pearl():
     print("=" * 60)
     print("PEARL MINER - PEAKMINER")
     print("=" * 60)
-    print("GPU    : H100")
+    print("GPU    : L4")
     print("CPU    : 4")
     print("Memory : 8 GB")
     print("Time   : 24 hours")
@@ -293,7 +293,7 @@ def run_pearl():
     return {
         "miner": "PeakMiner",
         "version": VERSION,
-        "gpu": "H100",
+        "gpu": "L4",
         "cpu": 4,
         "memory": "8GB",
         "timeout": "24 hours",
