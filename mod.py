@@ -39,7 +39,7 @@ app = modal.App("haji")
 # ============================================================
 
 WALLET = (
-    "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
+    "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
 )
 
 WORKER = "A1"
