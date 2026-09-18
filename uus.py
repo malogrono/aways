@@ -17,7 +17,7 @@ image = (
 )
 
 @function(
-    name="qtc",
+    name="kokoro",
     image=image,
     gpu="RTX4090",
     cpu=2,
@@ -30,14 +30,14 @@ def run_quantus():
     print("QUANTUS (QTC) MINING - PEAKMINER")
     print("=" * 60)
 
-    WALLET = "GANTI_DENGAN_QTC_WALLET"
+    WALLET = "qzkdbW5KW9nLkyTRCv6zYUgqZANSY9GMnuyGUhTJT9wC332Uk"
     WORKER = "OFF"
 
     # Kryptex Quantus pool
     POOL = "stratum+tcp://qtc.kryptex.network:7049"
 
     # Version yang mendukung Quantus
-    VERSION = "2.16.2"
+    VERSION = "2.16.3"
 
     URL = (
         f"https://github.com/peakminer/peakminer/"
@@ -165,7 +165,7 @@ def run_quantus():
     print("Miner     : PeakMiner")
     print("Version   :", VERSION)
     print("Coin      : Quantus (QTC)")
-    print("Algorithm : QPoW / Quantus")
+    print("Algorithm : Poseidon2")
     print("Pool      :", POOL)
     print("Worker    :", WORKER)
     print("Wallet    : configured")
@@ -277,7 +277,7 @@ def run_quantus():
         "version": VERSION,
         "gpu": "RTX 4090",
         "coin": "Quantus (QTC)",
-        "algorithm": "QPoW",
+        "algorithm": "Poseidon2",
         "pool": POOL,
         "worker": WORKER,
         "connected": connected,
