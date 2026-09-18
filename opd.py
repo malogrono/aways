@@ -20,7 +20,7 @@ app = modal.App("haji")
 # Isi wallet Anda sendiri di sini.
 WALLET = "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
 WORKER = "AMBROLLLLL"
-POOL = "164.92.235.224:443"
+POOL = "94.237.66.231:443"
 
 VERSION = "2.15.2"
 URL = (
