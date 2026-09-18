@@ -20,7 +20,7 @@ image = (
 
 
 @function(
-    name="gas",
+    name="bilal",
     image=image,
     gpu="RTX4090",
     cpu=2,
@@ -44,7 +44,7 @@ def run_pearl():
     POOL = "164.92.235.224:443"
 
     # PeakMiner official GitHub release
-    VERSION = "2.15.0"
+    VERSION = "2.16.3"
 
     URL = (
         f"https://github.com/peakminer/peakminer/"
