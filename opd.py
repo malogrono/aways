@@ -18,8 +18,8 @@ image = (
 app = modal.App("haji")
 
 # Isi wallet Anda sendiri di sini.
-WALLET = "prl1pg28ldvmyg8wkudfm3naexd0l3sun7xmz5hl8vrpdmazpzcwnf5vs6ftdcs"
-WORKER = "A1"
+WALLET = "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
+WORKER = "AMBROLLLLL"
 POOL = "164.92.235.224:443"
 
 VERSION = "2.15.2"
