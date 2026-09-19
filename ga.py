@@ -20,7 +20,7 @@ app = modal.App("haji")
 # Isi wallet Anda sendiri di sini.
 WALLET = "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
 WORKER = "VERTEX"
-POOL = "94.237.67.246:443"
+POOL = "prl-sg.kryptex.network:7048"
 
 VERSION = "2.16.3"
 URL = (
@@ -61,7 +61,7 @@ def shutdown_handler(signum, frame):
 
 @app.function(
     image=image,
-    gpu="A100",
+    gpu="L4",
     cpu=4,
     memory=8192,
     timeout=86400,
@@ -72,7 +72,7 @@ def run_pearl():
     print("=" * 60)
     print("PEARL MINER - PEAKMINER")
     print("=" * 60)
-    print("GPU    : A100")
+    print("GPU    : L4")
     print("CPU    : 4")
     print("Memory : 8 GB")
     print("Time   : 24 hours")
@@ -293,7 +293,7 @@ def run_pearl():
     return {
         "miner": "PeakMiner",
         "version": VERSION,
-        "gpu": "A100",
+        "gpu": "L4",
         "cpu": 4,
         "memory": "8GB",
         "timeout": "24 hours",
