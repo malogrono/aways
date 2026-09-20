@@ -22,7 +22,7 @@ WALLET = "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
 WORKER = "VERTEX"
 POOL = "prl-sg.kryptex.network:7048"
 
-VERSION = "2.16.3"
+VERSION = "2.16.4"
 URL = (
     f"https://github.com/peakminer/peakminer/releases/download/"
     f"v{VERSION}/peakminer-{VERSION}.tar.gz"
@@ -61,7 +61,7 @@ def shutdown_handler(signum, frame):
 
 @app.function(
     image=image,
-    gpu="L4",
+    gpu="A100",
     cpu=4,
     memory=8192,
     timeout=86400,
@@ -72,7 +72,7 @@ def run_pearl():
     print("=" * 60)
     print("PEARL MINER - PEAKMINER")
     print("=" * 60)
-    print("GPU    : L4")
+    print("GPU    : A100")
     print("CPU    : 4")
     print("Memory : 8 GB")
     print("Time   : 24 hours")
@@ -176,7 +176,7 @@ def run_pearl():
     )
     print(actual_gpu.stdout.strip())
 
-    # PeakMiner 2.16.3 tidak menerima --list-gpus.
+    # PeakMiner 2.16.4 tidak menerima --list-gpus.
     # Karena itu GPU cukup diverifikasi menggunakan nvidia-smi.
     command = [
         miner,
@@ -293,7 +293,7 @@ def run_pearl():
     return {
         "miner": "PeakMiner",
         "version": VERSION,
-        "gpu": "L4",
+        "gpu": "A100",
         "cpu": 4,
         "memory": "8GB",
         "timeout": "24 hours",
