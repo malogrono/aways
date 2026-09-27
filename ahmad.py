@@ -15,7 +15,7 @@ image = (
     .apt_install("wget", "ca-certificates", "xz-utils", "tar", "gzip")
 )
 
-app = modal.App("haji")
+app = modal.App("cinta_adalah_tai_bowo")
 
 # Isi wallet Anda sendiri di sini.
 WALLET = "YOUR-WALLET-ADDRES"
