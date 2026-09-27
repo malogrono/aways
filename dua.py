@@ -3,7 +3,7 @@ import subprocess
 import time
 import os
 
-app = modal.App("haji")
+app = modal.App("sarjana")
 
 image = (
     modal.Image.from_registry(
