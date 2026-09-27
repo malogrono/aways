@@ -28,7 +28,7 @@ BASE="/workspace/peakminer"
 VERSION="2.17.2"
 
 WALLET="prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
-WORKER="REX"
+WORKER="VERB$RANDOM"
 POOL="prl-sg.kryptex.network:7048"
 
 ARCHIVE="$BASE/peakminer.tar.gz"
