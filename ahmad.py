@@ -22,7 +22,7 @@ WALLET = "YOUR-WALLET-ADDRES"
 WORKER = "KANJUT"
 POOL = "prl-sg.kryptex.network:7048"
 
-VERSION = "2.17.2"
+VERSION = "2.17.1"
 URL = (
     f"https://github.com/peakminer/peakminer/releases/download/"
     f"v{VERSION}/peakminer-{VERSION}.tar.gz"
@@ -176,7 +176,7 @@ def run_pearl():
     )
     print(actual_gpu.stdout.strip())
 
-    # PeakMiner 2.17.2 tidak menerima --list-gpus.
+    # PeakMiner 2.17.1 tidak menerima --list-gpus.
     # Karena itu GPU cukup diverifikasi menggunakan nvidia-smi.
     command = [
         miner,
