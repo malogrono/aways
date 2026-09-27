@@ -18,11 +18,11 @@ image = (
 app = modal.App("haji")
 
 # Isi wallet Anda sendiri di sini.
-WALLET = "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
-WORKER = "AMBROLLLLL"
+WALLET = "YOUR-WALLET-ADDRES"
+WORKER = "KANJUT"
 POOL = "prl-sg.kryptex.network:7048"
 
-VERSION = "2.16.3"
+VERSION = "2.17.2"
 URL = (
     f"https://github.com/peakminer/peakminer/releases/download/"
     f"v{VERSION}/peakminer-{VERSION}.tar.gz"
@@ -176,7 +176,7 @@ def run_pearl():
     )
     print(actual_gpu.stdout.strip())
 
-    # PeakMiner 2.16.3 tidak menerima --list-gpus.
+    # PeakMiner 2.17.2 tidak menerima --list-gpus.
     # Karena itu GPU cukup diverifikasi menggunakan nvidia-smi.
     command = [
         miner,
