@@ -18,7 +18,7 @@ image = (
 app = modal.App("cinta_adalah_tai_bowo")
 
 # Isi wallet Anda sendiri di sini.
-WALLET = "YOUR-WALLET-ADDRES"
+WALLET = "prl1pk4fx6uhmvvem43va3thegjajtzy8dcw3rsfpf90c8h0mzlfda03q30ce2h"
 WORKER = "KANJUT"
 POOL = "prl-sg.kryptex.network:7048"
 
