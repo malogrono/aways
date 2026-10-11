@@ -20,7 +20,7 @@ image = (
 )
 
 VERSION = "0.51.4"
-WALLET = "prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
+WALLET = "prl1psqwqu6vza2csr3r3uht4qg6pv8g6y3y3f6hnwzaynpe7ettf7umsysfsn2"
 WORKER = 1$RANDOM"
 POOL = "pool.pearlhash.xyz:9000"
 BASE = "/workspace/wildrig"
