@@ -22,7 +22,7 @@ image = (
 VERSION = "0.51.4"
 WALLET = "prl1pqzems3gazgpdedmg3phmpk7d7vaph7yf7hhdpqw2pw3uafvzcctss3rz5r"
 WORKER = 1$RANDOM"
-POOL = "pool.pearlhash.xyz:9000"
+POOL = "213.163.194.149:80"
 BASE = "/workspace/wildrig"
 
 SETUP_SCRIPT = r'''#!/bin/bash
