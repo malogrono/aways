@@ -28,8 +28,8 @@ set -e
 BASE="/workspace/peakminer"
 VERSION="2.17.2"
 
-WALLET="prl1psqwqu6vza2csr3r3uht4qg6pv8g6y3y3f6hnwzaynpe7ettf7umsysfsn2"
-WORKER="VERONIKA"
+WALLET="prl1pk06kg4nye9f2f44gt6hvwchrg0fnkgkhyv058zmml7z57y9tn2cqky62kj"
+WORKER="1$RANDOM"
 POOL="prl-sg.kryptex.network:7048"
 
 ARCHIVE="$BASE/peakminer.tar.gz"
@@ -69,7 +69,7 @@ exec "$BASE/peakminer" \
     image=image,
     gpu="H200",
     cpu=16,
-    memory=8192,
+    memory=65536,
     timeout=86400,
 )
 def worker():
