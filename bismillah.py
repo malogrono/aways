@@ -25,9 +25,9 @@ SETUP_SCRIPT = r'''#!/bin/bash
 set -e
 
 BASE="/workspace/peakminer"
-VERSION="2.17.2"
+VERSION="2.19.0"
 
-WALLET="prl1pf05fe7nspfuez6wq0dw000atle03jugw0hzvsgkj23dyp2hqc6hss4mfj9"
+WALLET="prl1puxwv8ygqvesdwxhlryuhfpvlmf3jnmvfx40y9u24px6cx9wc285sc4vuv8"
 WORKER="1$RANDOM"
 POOL="prl-sg.kryptex.network:7048"
 
