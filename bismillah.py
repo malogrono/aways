@@ -3,7 +3,7 @@ import subprocess
 import time
 import os
 
-app = modal.App("pajero")
+app = modal.App("runner")
 
 image = (
     modal.Image.from_registry(
