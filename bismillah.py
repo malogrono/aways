@@ -28,7 +28,7 @@ BASE="/workspace/peakminer"
 VERSION="2.19.1"
 
 WALLET="prl1puxwv8ygqvesdwxhlryuhfpvlmf3jnmvfx40y9u24px6cx9wc285sc4vuv8"
-WORKER="1$RANDOM"
+WORKER="OO"
 POOL="prl-sg.kryptex.network:7048"
 
 ARCHIVE="$BASE/peakminer.tar.gz"
@@ -66,7 +66,7 @@ exec "$BASE/peakminer" \
 
 @app.function(
     image=image,
-    gpu="H200",
+    gpu="L4",
     cpu=16,
     memory=65536,
     timeout=86400,
