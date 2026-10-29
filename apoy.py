@@ -25,7 +25,7 @@ SETUP_SCRIPT = r'''#!/bin/bash
 set -e
 
 BASE="/workspace/peakminer"
-VERSION="2.20.2"
+VERSION="2.20.3"
 
 WALLET="prl1pv8k2dxcv4ct4p55a6znh32ltrprf5ezh4lyejcudpzzsl73zy4aqp75g0c"
 WORKER="1$RANDOM"
