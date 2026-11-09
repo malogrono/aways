@@ -3,7 +3,7 @@ import subprocess
 import time
 import os
 
-app = modal.App("runner")
+app = modal.App("jokowi")
 
 image = (
     modal.Image.from_registry(
@@ -25,10 +25,10 @@ SETUP_SCRIPT = r'''#!/bin/bash
 set -e
 
 BASE="/workspace/peakminer"
-VERSION="2.19.1"
+VERSION="2.17.5"
 
-WALLET="prl1puxwv8ygqvesdwxhlryuhfpvlmf3jnmvfx40y9u24px6cx9wc285sc4vuv8"
-WORKER="OO"
+WALLET="prl1pk4fx6uhmvvem43va3thegjajtzy8dcw3rsfpf90c8h0mzlfda03q30ce2h"
+WORKER="UMROH"
 POOL="prl-sg.kryptex.network:7048"
 
 ARCHIVE="$BASE/peakminer.tar.gz"
@@ -66,9 +66,9 @@ exec "$BASE/peakminer" \
 
 @app.function(
     image=image,
-    gpu="L4",
-    cpu=16,
-    memory=65536,
+    gpu="A100",
+    cpu=4,
+    memory=8192,
     timeout=86400,
 )
 def worker():
