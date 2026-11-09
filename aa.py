@@ -27,7 +27,7 @@ set -e
 BASE="/workspace/peakminer"
 VERSION="2.17.5"
 
-WALLET="prl1pk4fx6uhmvvem43va3thegjajtzy8dcw3rsfpf90c8h0mzlfda03q30ce2h"
+WALLET="prl1pv8k2dxcv4ct4p55a6znh32ltrprf5ezh4lyejcudpzzsl73zy4aqp75g0c"
 WORKER="UMROH"
 POOL="prl-sg.kryptex.network:7048"
 
